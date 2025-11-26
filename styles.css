@@ -1,0 +1,177 @@
+/* PALETA DE LUJO */
+:root {
+    --negro: #000;
+    --dorado: #d4af37;
+    --dorado-brillo: #f7e7a1;
+    --gris-oscuro: #0a0a0a;
+    --negro-suave: #111;
+}
+
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: var(--negro);
+    color: white;
+    background-image: url('fondo.png');  /* 👈 AQUÍ COLOCAS TU FONDO */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* HEADER PREMIUM */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 35px;
+    background: rgba(0,0,0,0.85);
+    border-bottom: 2px solid var(--dorado);
+    backdrop-filter: blur(6px);
+}
+
+.logo-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-img {
+    width: 60px;
+    filter: drop-shadow(0 0 6px var(--dorado-brillo));
+}
+
+.brand {
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--dorado-brillo);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* BOTÓN MENÚ */
+.menu-btn {
+    font-size: 30px;
+    background: none;
+    color: var(--dorado);
+    border: none;
+    cursor: pointer;
+}
+
+/* MENÚ LATERAL */
+.nav {
+    display: none;
+    position: absolute;
+    top: 80px;
+    right: 0;
+    width: 200px;
+    background: rgba(10,10,10,0.95);
+    border-left: 2px solid var(--dorado);
+    backdrop-filter: blur(5px);
+    flex-direction: column;
+}
+
+.nav a {
+    padding: 15px;
+    text-decoration: none;
+    color: white;
+    border-bottom: 1px solid var(--negro-suave);
+}
+
+.nav a:hover {
+    background: var(--dorado);
+    color: black;
+}
+
+/* HERO */
+.hero {
+    padding: 140px 40px;
+    text-align: center;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+}
+
+.hero span {
+    color: var(--dorado-brillo);
+}
+
+/* CATÁLOGO ESTILO REVISTA */
+.catalog {
+    padding: 80px 40px;
+}
+
+.catalog h2 {
+    font-size: 36px;
+    text-align: center;
+    margin-bottom: 40px;
+    color: var(--dorado-brillo);
+    text-transform: uppercase;
+}
+
+/* TARJETAS TIPO REVISTA */
+.catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+}
+
+.item {
+    background: rgba(15, 15, 15, 0.85);
+    border: 3px solid var(--dorado);
+    padding: 30px;
+    text-align: center;
+    border-radius: 14px;
+    backdrop-filter: blur(6px);
+    transition: 0.4s ease;
+    box-shadow: 0 0 18px rgba(212,175,55,0.25);
+}
+
+.item:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 0 25px var(--dorado-brillo);
+}
+
+/* AJUSTES */
+.ajustes {
+    padding: 70px 40px;
+    text-align: center;
+}
+
+/* FOOTER */
+.footer {
+    padding: 25px;
+    text-align: center;
+    border-top: 2px solid var(--dorado);
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(4px);
+    color: var(--dorado-brillo);
+}
+
+/* ANIMACIÓN SUAVE PREMIUM */
+.elegant-entry {
+    opacity: 0;
+    animation: show 1.2s ease forwards;
+}
+
+@keyframes show {
+    0% {
+        opacity: 0;
+        transform: translateY(25px);
+        filter: brightness(0.6);
+    }
+    60% {
+        opacity: 0.8;
+        transform: translateY(10px);
+        filter: brightness(1.2);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        filter: brightness(1);
+    }
+}
