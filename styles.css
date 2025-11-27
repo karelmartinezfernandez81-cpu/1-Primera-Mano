@@ -1,177 +1,116 @@
-/* PALETA DE LUJO */
-:root {
-    --negro: #000;
-    --dorado: #d4af37;
-    --dorado-brillo: #f7e7a1;
-    --gris-oscuro: #0a0a0a;
-    --negro-suave: #111;
+/* PALETA & RESET */
+:root{
+  --negro:#000;
+  --dorado:#d4af37;
+  --dorado-brillo:#f7e7a1;
+  --gris-oscuro:#0a0a0a;
+  --negro-suave:#111;
+  --white-soft:#efece4;
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Poppins',sans-serif;}
+body{
+  background:var(--negro);
+  color:var(--white-soft);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
 }
 
-/* RESET */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+/* HEADER */
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:16px 26px;
+  background:rgba(0,0,0,0.75);
+  border-bottom:2px solid var(--dorado);
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:120;
 }
-
-body {
-    background: var(--negro);
-    color: white;
-    background-image: url('fondo.png');  /* 👈 AQUÍ COLOCAS TU FONDO */
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+.left{display:flex;align-items:center;}
+.right{display:flex;align-items:center;gap:12px;}
+.menu-btn{
+  font-size:28px;color:var(--dorado-brillo);background:none;border:none;cursor:pointer;
 }
+.logo-img{width:56px;filter:drop-shadow(0 0 6px var(--dorado-brillo));}
+.brand{color:var(--dorado-brillo);font-weight:700;letter-spacing:1px;text-transform:uppercase;}
 
-/* HEADER PREMIUM */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 18px 35px;
-    background: rgba(0,0,0,0.85);
-    border-bottom: 2px solid var(--dorado);
-    backdrop-filter: blur(6px);
+/* NAV LATERAL */
+.nav{
+  position:fixed;
+  top:0;
+  left:-320px;
+  width:320px;
+  height:100vh;
+  background:rgba(0,0,0,0.98);
+  border-right:3px solid var(--dorado);
+  box-shadow:12px 0 40px rgba(0,0,0,0.6);
+  transition:left .42s cubic-bezier(.2,.9,.3,1);
+  z-index:130;
+  padding-top:90px;
 }
+.nav.open{left:0;}
+.nav-inner{display:flex;flex-direction:column;gap:8px;padding:8px 22px;}
+.nav-link{color:var(--dorado);text-decoration:none;padding:14px 10px;font-weight:700;border-radius:8px;display:block;}
+.nav-link:hover{background:rgba(212,175,55,0.08);color:#fff;padding-left:18px;}
 
-.logo-box {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+/* OVERLAY */
+.overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.45);visibility:hidden;opacity:0;transition:opacity .28s,visibility .28s;z-index:125;
 }
+.overlay.show{visibility:visible;opacity:1;}
 
-.logo-img {
-    width: 60px;
-    filter: drop-shadow(0 0 6px var(--dorado-brillo));
+/* PORTADA ESTILO REVISTA */
+.portada-revista{
+  margin-top:82px;
+  position:relative;
+  min-height:72vh;
+  background-image:url("img/fondo-revista.jpg");
+  background-size:cover;
+  background-position:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:40px 20px;
+  overflow:hidden;
 }
+.overlay-portada{position:absolute;inset:0;background:rgba(0,0,0,0.48);backdrop-filter:blur(3px);}
+.portada-contenido{position:relative;z-index:2;text-align:center;color:var(--white-soft);animation:fadeUp 1.2s ease both;}
+.portada-contenido h1{font-size:3rem;color:var(--dorado);letter-spacing:4px;margin-bottom:6px;}
+.portada-contenido p{opacity:0.9;margin-bottom:18px;}
 
-.brand {
-    font-size: 26px;
-    font-weight: 600;
-    color: var(--dorado-brillo);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-}
+/* GRID DE 4 MINIATURAS (estilo revista) */
+.portada-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;justify-content:center;margin-top:12px;}
+.portada-grid img{width:150px;height:200px;object-fit:cover;border-radius:10px;border:3px solid var(--dorado);box-shadow:0 8px 30px rgba(0,0,0,0.6);transition:transform .28s;}
+.portada-grid img:hover{transform:translateY(-6px) scale(1.03);}
 
-/* BOTÓN MENÚ */
-.menu-btn {
-    font-size: 30px;
-    background: none;
-    color: var(--dorado);
-    border: none;
-    cursor: pointer;
-}
+/* CATALOGO DESTACADO */
+.catalog{padding:56px 22px 48px;margin-top:8px;}
+.catalog h2{text-align:center;color:var(--dorado);font-size:28px;margin-bottom:18px;text-transform:uppercase;}
+.catalog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;padding:0 30px;}
+.item{display:flex;align-items:center;justify-content:center;padding:28px;background:rgba(15,15,15,0.85);border:2px solid rgba(212,175,55,0.12);border-radius:12px;text-align:center;color:var(--white-soft);text-decoration:none;}
 
-/* MENÚ LATERAL */
-.nav {
-    display: none;
-    position: absolute;
-    top: 80px;
-    right: 0;
-    width: 200px;
-    background: rgba(10,10,10,0.95);
-    border-left: 2px solid var(--dorado);
-    backdrop-filter: blur(5px);
-    flex-direction: column;
-}
+/* SECCIONES */
+.hero, .ajustes, .catalog, .footer{padding:40px 18px;}
+.ajustes{padding:40px 18px;}
+.footer{text-align:center;border-top:2px solid var(--dorado);padding:22px 18px;background:rgba(0,0,0,0.8);color:var(--dorado-brillo);}
 
-.nav a {
-    padding: 15px;
-    text-decoration: none;
-    color: white;
-    border-bottom: 1px solid var(--negro-suave);
-}
+/* SUBPAGES (categorías) */
+.subpage .header{position:relative;}
+.back-btn{display:inline-block;margin:14px;color:var(--dorado);background:transparent;border:2px solid var(--dorado);padding:8px 12px;border-radius:8px;text-decoration:none;}
+.product-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;padding:20px;}
+.product{background:rgba(15,15,15,0.9);padding:18px;border-radius:10px;border:2px solid rgba(212,175,55,0.12);text-align:center;}
+.product img{width:100%;height:160px;object-fit:cover;border-radius:8px;margin-bottom:8px;border:2px solid var(--dorado);}
 
-.nav a:hover {
-    background: var(--dorado);
-    color: black;
-}
+/* ANIMACIONES */
+.elegant-entry{opacity:0;animation:fadeUp .95s ease forwards;}
+@keyframes fadeUp{0%{opacity:0;transform:translateY(24px)}100%{opacity:1;transform:translateY(0)}}
 
-/* HERO */
-.hero {
-    padding: 140px 40px;
-    text-align: center;
-    background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(4px);
-}
-
-.hero span {
-    color: var(--dorado-brillo);
-}
-
-/* CATÁLOGO ESTILO REVISTA */
-.catalog {
-    padding: 80px 40px;
-}
-
-.catalog h2 {
-    font-size: 36px;
-    text-align: center;
-    margin-bottom: 40px;
-    color: var(--dorado-brillo);
-    text-transform: uppercase;
-}
-
-/* TARJETAS TIPO REVISTA */
-.catalog-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 25px;
-}
-
-.item {
-    background: rgba(15, 15, 15, 0.85);
-    border: 3px solid var(--dorado);
-    padding: 30px;
-    text-align: center;
-    border-radius: 14px;
-    backdrop-filter: blur(6px);
-    transition: 0.4s ease;
-    box-shadow: 0 0 18px rgba(212,175,55,0.25);
-}
-
-.item:hover {
-    transform: translateY(-8px) scale(1.03);
-    box-shadow: 0 0 25px var(--dorado-brillo);
-}
-
-/* AJUSTES */
-.ajustes {
-    padding: 70px 40px;
-    text-align: center;
-}
-
-/* FOOTER */
-.footer {
-    padding: 25px;
-    text-align: center;
-    border-top: 2px solid var(--dorado);
-    background: rgba(0,0,0,0.85);
-    backdrop-filter: blur(4px);
-    color: var(--dorado-brillo);
-}
-
-/* ANIMACIÓN SUAVE PREMIUM */
-.elegant-entry {
-    opacity: 0;
-    animation: show 1.2s ease forwards;
-}
-
-@keyframes show {
-    0% {
-        opacity: 0;
-        transform: translateY(25px);
-        filter: brightness(0.6);
-    }
-    60% {
-        opacity: 0.8;
-        transform: translateY(10px);
-        filter: brightness(1.2);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-        filter: brightness(1);
-    }
+/* RESPONSIVE */
+@media (max-width:700px){
+  .nav{width:86%;}
+  .portada-grid img{width:120px;height:160px;}
+  .portada-contenido h1{font-size:2.2rem;}
 }
