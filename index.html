@@ -12,7 +12,7 @@
   <!-- HEADER -->
   <header class="header elegant-entry">
     <div class="left">
-      <button class="menu-btn" id="menuBtn">☰</button>
+      <button class="menu-btn" id="menuBtn" aria-label="Abrir menú" aria-expanded="false">☰</button>
     </div>
 
     <div class="right logo-box">
@@ -22,30 +22,60 @@
   </header>
 
   <!-- MENÚ LATERAL -->
-  <aside class="nav" id="navMenu">
-    <nav class="nav-inner">
-      <a href="index.html">Inicio</a>
-      <a href="catalogo/electrodomesticos.html">Electrodomésticos</a>
-      <a href="catalogo/muebles.html">Muebles</a>
-      <a href="catalogo/alimentos.html">Alimentos en Combo</a>
+  <aside class="nav" id="navMenu" aria-hidden="true">
+    <nav class="nav-inner" role="navigation" aria-label="Menú principal">
+      <a href="index.html" class="nav-link">Inicio</a>
+      <a href="catalogo/electrodomesticos.html" class="nav-link">Electrodomésticos</a>
+      <a href="catalogo/muebles.html" class="nav-link">Muebles para el Hogar</a>
+      <a href="catalogo/alimentos.html" class="nav-link">Alimentos / Combos</a>
+      <a href="#ajustes" class="nav-link">Ajustes</a>
+      <a href="#contacto" class="nav-link">Contacto</a>
     </nav>
   </aside>
 
+  <!-- Overlay -->
   <div class="overlay" id="overlay"></div>
 
-  <!-- PORTADA CON 4 IMÁGENES -->
-  <section id="inicio" class="hero">
-    <div class="portada-grid">
-      <img src="img/portada1.jpg">
-      <img src="img/portada2.jpg">
-      <img src="img/portada3.jpg">
-      <img src="img/portada4.jpg">
-    </div>
+  <!-- PORTADA ESTILO REVISTA -->
+  <section id="inicio" class="hero portada-revista elegant-entry">
+    <div class="overlay-portada"></div>
 
-    <h1>Bienvenido a <span>Primera Mano</span></h1>
-    <p>Catálogo premium negro y dorado</p>
+    <div class="portada-contenido">
+      <h1><span>PRIMERA MANO</span></h1>
+      <p>Catálogo Premium — Negro & Dorado</p>
+
+      <div class="portada-grid">
+        <img src="img/portada1.jpg" alt="Portada 1">
+        <img src="img/portada2.jpg" alt="Portada 2">
+        <img src="img/portada3.jpg" alt="Portada 3">
+        <img src="img/portada4.jpg" alt="Portada 4">
+      </div>
+    </div>
   </section>
 
+  <!-- CATEGORÍAS DESTACADAS -->
+  <section id="catalogo" class="catalog elegant-entry">
+    <h2>Categorías</h2>
+    <div class="catalog-grid">
+      <a class="item" href="catalogo/electrodomesticos.html">⚡ Electrodomésticos</a>
+      <a class="item" href="catalogo/muebles.html">🛋 Muebles para el Hogar</a>
+      <a class="item" href="catalogo/alimentos.html">🍱 Alimentos / Combos</a>
+    </div>
+  </section>
+
+  <!-- AJUSTES -->
+  <section id="ajustes" class="ajustes elegant-entry">
+    <h2>Ajustes</h2>
+    <p>Personaliza tu experiencia</p>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contacto" class="ajustes elegant-entry">
+    <h2>Contacto</h2>
+    <p>Escríbenos para más información</p>
+  </section>
+
+  <!-- FOOTER -->
   <footer class="footer">
     <p>© 2025 Primera Mano | Diseñado por Magdiel</p>
   </footer>
