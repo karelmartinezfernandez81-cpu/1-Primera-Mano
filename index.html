@@ -1514,7 +1514,7 @@
     localStorage.setItem("carrito", JSON.stringify(carrito));
   }
 
-  function agregarAlCarrito(nombre, idSelect) {
+  function agregarAlCarrito(nombre, idSelect, categoria) {
     const select = document.getElementById(idSelect);
     let precio = 0;
     let tamano = "";
@@ -1527,7 +1527,7 @@
       tamano = "Único modelo";
     }
 
-    carrito.push({ nombre, tamano, precio });
+    carrito.push({ nombre, tamano, precio, categoria });
     guardarCarrito();
     actualizarCarrito();
   }
@@ -1565,9 +1565,9 @@
 
   function vaciarCarrito() {
     carrito = [];
-    guardarCarrito();
-    actualizarCarrito();
-  }
+     guardarCarrito();
+     actualizarCarrito();
+    }
 
   function enviarWhatsApp() {
     if (carrito.length === 0) {
@@ -1576,13 +1576,33 @@
     }
 
     let mensaje = "🛋️ *Pedido desde el Catálogo Primera Mano:*\n\n";
+
     carrito.forEach(item => {
       mensaje += `• ${item.nombre} - ${item.tamano} - $${item.precio.toLocaleString()}\n`;
     });
+
     const total = carrito.reduce((acc, item) => acc + item.precio, 0);
     mensaje += `\n💰 *Total:* $${total.toLocaleString()}\n\n📞 Enviado desde el catálogo web.`;
 
-    const numeroWhatsApp = "53575726";
+    // Detectamos la categoría (del primer producto)
+    let categoria = carrito[0].categoria;
+    let numeroWhatsApp = "";
+
+    // ASIGNAR NÚMEROS SEGÚN TU LISTA:
+    // Electrodomésticos → 54449370
+    // Camas / Muebles → 53575716
+    // Combo y Remesa → 54449370
+
+    if (categoria === "Electrodomésticos") {
+      numeroWhatsApp = "54449370";
+    } 
+    else if (categoria === "Muebles") {
+      numeroWhatsApp = "53575716";  // Camas / muebles
+    }
+    else if (categoria === "ComboRemesa") {
+      numeroWhatsApp = "54449370";
+    }
+
     const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
     window.open(url, "_blank");
   }
