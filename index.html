@@ -1567,62 +1567,120 @@
      actualizarCarrito();
     }
 
-Por alguna razon  habre whasap pero no redireciona al # de telefono function enviarWhatsApp() {
-    if (carrito.length === 0) {
-      alert("Tu carrito está vacío.");
-      return;
-    }
+<script>
+/* ---------- helpers ---------- */
+function normalizeText(str = "") {
+  return str
+    .toString()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // quitar acentos
+    .trim()
+    .toLowerCase();
+}
 
-    let mensaje = "🛋️ *Pedido desde el Catálogo Primera Mano:*\n\n";
+function onlyDigits(str = "") {
+  return str.toString().replace(/\D/g, "");
+}
 
-    carrito.forEach(item => {
-      mensaje += `• ${item.nombre} - ${item.tamano} - $${item.precio.toLocaleString()}\n`;
-    });
-
-    const total = carrito.reduce((acc, item) => acc + item.precio, 0);
-    mensaje += `\n💰 *Total:* $${total.toLocaleString()}\n\n📞 Enviado desde el catálogo web.`;
-
-    // Detectamos la categoría (del primer producto)
-    let categoria = carrito[0].categoria;
-    let numeroWhatsApp = "";
-
-    // ASIGNAR NÚMEROS SEGÚN TU LISTA:
-    // Electrodomésticos → 5354843139
-    // Camas / Muebles → 53575716
-    // Combo → 54843139
-
-    if (categoria === "Electrodomésticos") {
-      numeroWhatsApp = "5354843139";
-    } 
-    else if (categoria === "Muebles") {
-      numeroWhatsApp = "53575716";  // Camas / muebles
-    }
-    else if (categoria === "ComboRemesa") {
-      numeroWhatsApp = "54843139";
-    }
-
-    const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
-    window.open(url, "_blank");
+/* ---------- enviarWhatsApp mejorada ---------- */
+function enviarWhatsApp(defaultCountry = "53") {
+  // espera que `carrito` sea un array global
+  if (!Array.isArray(carrito) || carrito.length === 0) {
+    alert("Tu carrito está vacío.");
+    return;
   }
 
-  document.addEventListener("DOMContentLoaded", actualizarCarrito);
-   
-  function toggleCarrito() {
-   const carrito = document.getElementById("carrito");
-   const contenedor = document.getElementById("carrito-contenedor");
-   const icon = document.getElementById("toggle-icon");
+  // construir mensaje
+  let mensaje = "🛋️ *Pedido desde el Catálogo Primera Mano:*\n\n";
+  carrito.forEach(item => {
+    mensaje += `• ${item.nombre || 'sin nombre'} - ${item.tamano || ''} - $${(Number(item.precio) || 0).toLocaleString()}\n`;
+  });
+  const total = carrito.reduce((acc, item) => acc + (Number(item.precio) || 0), 0);
+  mensaje += `\n💰 *Total:* $${total.toLocaleString()}\n\n📞 Enviado desde el catálogo web.`;
 
-  carrito.classList.toggle("abierto");
+  // detectar categoría (del primer producto) y normalizar
+  const rawCategoria = carrito[0].categoria || "";
+  const categoria = normalizeText(rawCategoria);
+  console.log("Categoría detectada (raw):", rawCategoria, "→ normalizada:", categoria);
 
-  if (carrito.classList.contains("abierto")) {
+  // mapa de categorías -> números (puedes añadir más)
+  const mapaNumeros = {
+    "electrodomesticos": "5354843139",
+    "muebles": "53575716",
+    "camas": "53575716",
+    "comboremesa": "54843139",
+    "combo": "54843139"
+  };
+
+  // buscar número por coincidencia (más tolerante)
+  let numeroRaw = "";
+  for (const key in mapaNumeros) {
+    const keyNorm = normalizeText(key);
+    if (categoria === keyNorm || categoria.includes(keyNorm) || keyNorm.includes(categoria)) {
+      numeroRaw = mapaNumeros[key];
+      break;
+    }
+  }
+
+  if (!numeroRaw) {
+    alert("No se encontró número de WhatsApp para la categoría: " + rawCategoria + ". Revisa el mapeo.");
+    console.warn("No se encontró número para categoría:", rawCategoria, "Mapa actual:", mapaNumeros);
+    return;
+  }
+
+  // normalizar número (solo dígitos)
+  let digits = onlyDigits(numeroRaw);
+  console.log("Número raw:", numeroRaw, "→ dígitos:", digits);
+
+  // si parece corto (ej. 8 dígitos), añadir código de país por defecto
+  if (digits.length <= 8 && defaultCountry) {
+    digits = defaultCountry + digits;
+    console.log("Se añadió código de país por defecto:", defaultCountry, "->", digits);
+  }
+
+  // validación final: al menos 8-9 dígitos (ajusta según tu país)
+  if (digits.length < 8) {
+    alert("El número de teléfono configurado para esta categoría no es válido: " + numeroRaw);
+    console.warn("Número inválido tras normalizar:", digits);
+    return;
+  }
+
+  const url = `https://wa.me/${digits}?text=${encodeURIComponent(mensaje)}`;
+  console.log("URL WhatsApp final:", url);
+
+  // abrir en nueva pestaña (o usar location.href para abrir en la misma)
+  window.open(url, "_blank");
+}
+
+/* ---------- toggleCarrito (evitar colisiones de nombre) ---------- */
+function toggleCarrito() {
+  const carritoElemento = document.getElementById("carrito"); // elemento DOM
+  const contenedor = document.getElementById("carrito-contenedor");
+  const icon = document.getElementById("toggle-icon");
+
+  if (!carritoElemento || !contenedor || !icon) {
+    console.warn("Elementos del DOM del carrito no encontrados.");
+    return;
+  }
+
+  carritoElemento.classList.toggle("abierto");
+
+  if (carritoElemento.classList.contains("abierto")) {
     contenedor.style.maxHeight = "500px";
-    icon.textContent = "🔽"; // icono hacia abajo
+    icon.textContent = "🔽";
   } else {
     contenedor.style.maxHeight = "70px";
-    icon.textContent = "🔼"; // icono hacia arriba
+    icon.textContent = "🔼";
   }
- }
- </script>        
+}
+
+/* ---------- inicialización ---------- */
+document.addEventListener("DOMContentLoaded", function () {
+  // si tienes una función actualizarCarrito definida, se llamará aquí
+  if (typeof actualizarCarrito === "function") actualizarCarrito();
+});
+</script>
+
     
 </body>
 
