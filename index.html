@@ -1567,84 +1567,63 @@
      actualizarCarrito();
     }
 
- function enviarWhatsApp(defaultCountry = "53") {
-  // comprueba existencia y formato del carrito
-  if (!Array.isArray(carrito) || carrito.length === 0) {
-    alert("Tu carrito está vacío.");
-    return;
-  }
-
-  // construye el mensaje
-  let mensaje = "🛋️ *Pedido desde el Catálogo Primera Mano:*\n\n";
-  carrito.forEach(item => {
-    mensaje += `• ${item.nombre} - ${item.tamano || ""} - $${(item.precio || 0).toLocaleString()}\n`;
-  });
-  const total = carrito.reduce((acc, item) => acc + (item.precio || 0), 0);
-  mensaje += `\n💰 *Total:* $${total.toLocaleString()}\n\n📞 Enviado desde el catálogo web.`;
-
-  // obtiene y normaliza la categoría del primer producto (sin acentos, en minúsculas)
-  const rawCategoria = (carrito[0].categoria || "").toString();
-  const normalizeText = str =>
-    str
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "") // quitar acentos
-      .trim()
-      .toLowerCase();
-
-  const categoria = normalizeText(rawCategoria);
-  console.log("Categoría detectada (raw):", rawCategoria, "→ normalizada:", categoria);
-
-  // mapa de categorías -> números (pueden tener '+' o espacios; los normalizamos después)
-  const mapaNumeros = {
-    "electrodomesticos": "+5354843139",
-    "electrodomésticos": "+5354843139", // por si usas con acento
-    "muebles": "53575716",
-    "camas": "53575716",
-    "combo": "54843139",
-    "comboremesa": "54843139"
-  };
-
-  // buscar número por coincidencia (más tolerante) usando claves normalizadas
-  let numeroWhatsAppRaw = "";
-  for (const key in mapaNumeros) {
-    const keyNorm = normalizeText(key);
-    if (
-      categoria === keyNorm ||
-      categoria.includes(keyNorm) ||
-      keyNorm.includes(categoria)
-    ) {
-      numeroWhatsAppRaw = mapaNumeros[key];
-      break;
+Por alguna razon  habre whasap pero no redireciona al # de telefono function enviarWhatsApp() {
+    if (carrito.length === 0) {
+      alert("Tu carrito está vacío.");
+      return;
     }
+
+    let mensaje = "🛋️ *Pedido desde el Catálogo Primera Mano:*\n\n";
+
+    carrito.forEach(item => {
+      mensaje += `• ${item.nombre} - ${item.tamano} - $${item.precio.toLocaleString()}\n`;
+    });
+
+    const total = carrito.reduce((acc, item) => acc + item.precio, 0);
+    mensaje += `\n💰 *Total:* $${total.toLocaleString()}\n\n📞 Enviado desde el catálogo web.`;
+
+    // Detectamos la categoría (del primer producto)
+    let categoria = carrito[0].categoria;
+    let numeroWhatsApp = "";
+
+    // ASIGNAR NÚMEROS SEGÚN TU LISTA:
+    // Electrodomésticos → 5354843139
+    // Camas / Muebles → 53575716
+    // Combo → 54843139
+
+    if (categoria === "Electrodomésticos") {
+      numeroWhatsApp = "5354843139";
+    } 
+    else if (categoria === "Muebles") {
+      numeroWhatsApp = "53575716";  // Camas / muebles
+    }
+    else if (categoria === "ComboRemesa") {
+      numeroWhatsApp = "54843139";
+    }
+
+    const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+    window.open(url, "_blank");
   }
 
-  if (!numeroWhatsAppRaw) {
-    alert("No se encontró número de WhatsApp para la categoría: " + rawCategoria + ". Revisa el mapeo.");
-    console.warn("No se encontró número para categoría:", rawCategoria, "Mapa actual:", mapaNumeros);
-    return;
+  document.addEventListener("DOMContentLoaded", actualizarCarrito);
+   
+  function toggleCarrito() {
+   const carrito = document.getElementById("carrito");
+   const contenedor = document.getElementById("carrito-contenedor");
+   const icon = document.getElementById("toggle-icon");
+
+  carrito.classList.toggle("abierto");
+
+  if (carrito.classList.contains("abierto")) {
+    contenedor.style.maxHeight = "500px";
+    icon.textContent = "🔽"; // icono hacia abajo
+  } else {
+    contenedor.style.maxHeight = "70px";
+    icon.textContent = "🔼"; // icono hacia arriba
   }
-
-  // normalizar: quedarnos sólo con dígitos
-  let digits = numeroWhatsAppRaw.toString().replace(/\D/g, "");
-  console.log("Número raw:", numeroWhatsAppRaw, "→ digits:", digits);
-
-  // si el número parece local corto (ej. 8 dígitos), añadir código de país por defecto
-  if (digits.length <= 8 && defaultCountry) {
-    digits = defaultCountry + digits;
-    console.log("Añadido código de país por defecto:", defaultCountry, "→", digits);
-  }
-
-  // comprobación mínima de longitud (ajusta si tus números tienen longitud distinta)
-  if (digits.length < 8) {
-    alert("El número de teléfono configurado para esta categoría no es válido: " + numeroWhatsAppRaw);
-    console.warn("Número inválido tras normalizar:", digits);
-    return;
-  }
-
-  // crea url y abre WhatsApp
-  const url = `https://wa.me/${digits}?text=${encodeURIComponent(mensaje)}`;
-  console.log("URL WhatsApp final:", url);
-  window.open(url, "_blank");
-}
+ }
+ </script>        
+    
+</body>
 
 </html>
