@@ -1567,30 +1567,40 @@
      actualizarCarrito();
     }
 
+<!-- Carrito en tu HTML -->
+<div id="carrito">
+  <div id="carrito-contenedor"></div>
+  <span id="toggle-icon">🔼</span>
+</div>
+
 <script>
+/* ---------- datos globales ---------- */
+let carrito = []; // array de productos
+
 /* ---------- helpers ---------- */
 function normalizeText(str = "") {
-  return str
-    .toString()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "") // quitar acentos
-    .trim()
-    .toLowerCase();
+  return str.toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
 }
-
 function onlyDigits(str = "") {
   return str.toString().replace(/\D/g, "");
 }
 
-/* ---------- enviarWhatsApp mejorada ---------- */
+/* ---------- actualizarCarrito ---------- */
+function actualizarCarrito() {
+  const cont = document.getElementById("carrito-contenedor");
+  if (!cont) return;
+  cont.innerHTML = carrito.map(item =>
+    `<div>${item.nombre || "sin nombre"} - ${item.tamano || ""} - $${item.precio || 0}</div>`
+  ).join("");
+}
+
+/* ---------- enviarWhatsApp ---------- */
 function enviarWhatsApp(defaultCountry = "53") {
-  // espera que `carrito` sea un array global
   if (!Array.isArray(carrito) || carrito.length === 0) {
     alert("Tu carrito está vacío.");
     return;
   }
 
-  // construir mensaje
   let mensaje = "🛋️ *Pedido desde el Catálogo Primera Mano:*\n\n";
   carrito.forEach(item => {
     mensaje += `• ${item.nombre || 'sin nombre'} - ${item.tamano || ''} - $${(Number(item.precio) || 0).toLocaleString()}\n`;
@@ -1598,12 +1608,9 @@ function enviarWhatsApp(defaultCountry = "53") {
   const total = carrito.reduce((acc, item) => acc + (Number(item.precio) || 0), 0);
   mensaje += `\n💰 *Total:* $${total.toLocaleString()}\n\n📞 Enviado desde el catálogo web.`;
 
-  // detectar categoría (del primer producto) y normalizar
   const rawCategoria = carrito[0].categoria || "";
   const categoria = normalizeText(rawCategoria);
-  console.log("Categoría detectada (raw):", rawCategoria, "→ normalizada:", categoria);
 
-  // mapa de categorías -> números (puedes añadir más)
   const mapaNumeros = {
     "electrodomesticos": "5354843139",
     "muebles": "53575716",
@@ -1612,7 +1619,6 @@ function enviarWhatsApp(defaultCountry = "53") {
     "combo": "54843139"
   };
 
-  // buscar número por coincidencia (más tolerante)
   let numeroRaw = "";
   for (const key in mapaNumeros) {
     const keyNorm = normalizeText(key);
@@ -1623,48 +1629,32 @@ function enviarWhatsApp(defaultCountry = "53") {
   }
 
   if (!numeroRaw) {
-    alert("No se encontró número de WhatsApp para la categoría: " + rawCategoria + ". Revisa el mapeo.");
-    console.warn("No se encontró número para categoría:", rawCategoria, "Mapa actual:", mapaNumeros);
+    alert("No se encontró número de WhatsApp para la categoría: " + rawCategoria);
     return;
   }
 
-  // normalizar número (solo dígitos)
   let digits = onlyDigits(numeroRaw);
-  console.log("Número raw:", numeroRaw, "→ dígitos:", digits);
-
-  // si parece corto (ej. 8 dígitos), añadir código de país por defecto
   if (digits.length <= 8 && defaultCountry) {
     digits = defaultCountry + digits;
-    console.log("Se añadió código de país por defecto:", defaultCountry, "->", digits);
   }
-
-  // validación final: al menos 8-9 dígitos (ajusta según tu país)
   if (digits.length < 8) {
-    alert("El número de teléfono configurado para esta categoría no es válido: " + numeroRaw);
-    console.warn("Número inválido tras normalizar:", digits);
+    alert("Número inválido: " + numeroRaw);
     return;
   }
 
   const url = `https://wa.me/${digits}?text=${encodeURIComponent(mensaje)}`;
-  console.log("URL WhatsApp final:", url);
-
-  // abrir en nueva pestaña (o usar location.href para abrir en la misma)
   window.open(url, "_blank");
 }
 
-/* ---------- toggleCarrito (evitar colisiones de nombre) ---------- */
+/* ---------- toggleCarrito ---------- */
 function toggleCarrito() {
-  const carritoElemento = document.getElementById("carrito"); // elemento DOM
+  const carritoElemento = document.getElementById("carrito");
   const contenedor = document.getElementById("carrito-contenedor");
   const icon = document.getElementById("toggle-icon");
 
-  if (!carritoElemento || !contenedor || !icon) {
-    console.warn("Elementos del DOM del carrito no encontrados.");
-    return;
-  }
+  if (!carritoElemento || !contenedor || !icon) return;
 
   carritoElemento.classList.toggle("abierto");
-
   if (carritoElemento.classList.contains("abierto")) {
     contenedor.style.maxHeight = "500px";
     icon.textContent = "🔽";
@@ -1676,12 +1666,8 @@ function toggleCarrito() {
 
 /* ---------- inicialización ---------- */
 document.addEventListener("DOMContentLoaded", function () {
-  // si tienes una función actualizarCarrito definida, se llamará aquí
-  if (typeof actualizarCarrito === "function") actualizarCarrito();
+  actualizarCarrito();
 });
 </script>
-
-    
-</body>
 
 </html>
