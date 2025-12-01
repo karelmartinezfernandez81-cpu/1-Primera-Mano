@@ -1568,61 +1568,64 @@
     }
 
   function enviarWhatsApp() {
-    if (carrito.length === 0) {
-      alert("Tu carrito está vacío.");
-      return;
-    }
-
-    let mensaje = "🛋️ *Pedido desde el Catálogo Primera Mano:*\n\n";
-
-    carrito.forEach(item => {
-      mensaje += `• ${item.nombre} - ${item.tamano} - $${item.precio.toLocaleString()}\n`;
-    });
-
-    const total = carrito.reduce((acc, item) => acc + item.precio, 0);
-    mensaje += `\n💰 *Total:* $${total.toLocaleString()}\n\n📞 Enviado desde el catálogo web.`;
-
-    // Detectamos la categoría (del primer producto)
-    let categoria = carrito[0].categoria;
-    let numeroWhatsApp = "";
-
-    // ASIGNAR NÚMEROS SEGÚN TU LISTA:
-    // Electrodomésticos → 5354843139
-    // Camas / Muebles → 53575716
-    // Combo → 54843139
-
-    if (categoria === "Electrodomésticos") {
-      numeroWhatsApp = "5354843139";
-    } 
-    else if (categoria === "Muebles") {
-      numeroWhatsApp = "53575716";  // Camas / muebles
-    }
-    else if (categoria === "ComboRemesa") {
-      numeroWhatsApp = "54843139";
-    }
-
-    const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
-    window.open(url, "_blank");
+  // comprueba existencia y formato del carrito
+  if (!Array.isArray(carrito) || carrito.length === 0) {
+    alert("Tu carrito está vacío.");
+    return;
   }
 
-  document.addEventListener("DOMContentLoaded", actualizarCarrito);
-   
-  function toggleCarrito() {
-   const carrito = document.getElementById("carrito");
-   const contenedor = document.getElementById("carrito-contenedor");
-   const icon = document.getElementById("toggle-icon");
+  // construye el mensaje
+  let mensaje = "🛋️ *Pedido desde el Catálogo Primera Mano:*\n\n";
+  carrito.forEach(item => {
+    mensaje += `• ${item.nombre} - ${item.tamano || ""} - $${(item.precio || 0).toLocaleString()}\n`;
+  });
+  const total = carrito.reduce((acc, item) => acc + (item.precio || 0), 0);
+  mensaje += `\n💰 *Total:* $${total.toLocaleString()}\n\n📞 Enviado desde el catálogo web.`;
 
-  carrito.classList.toggle("abierto");
+  // obtiene y normaliza la categoría del primer producto
+  const rawCategoria = (carrito[0].categoria || "").toString();
+  const categoria = rawCategoria.trim().toLowerCase();
+  console.log("Categoría detectada:", rawCategoria);
 
-  if (carrito.classList.contains("abierto")) {
-    contenedor.style.maxHeight = "500px";
-    icon.textContent = "🔽"; // icono hacia abajo
-  } else {
-    contenedor.style.maxHeight = "70px";
-    icon.textContent = "🔼"; // icono hacia arriba
+  // mapa de categorías -> números (usa números completos en formato internacional si los tienes)
+  const mapaNumeros = {
+    "electrodomésticos": "5354843139", // ideal: "53XXXXXXXXX"
+    "electrodomesticos": "5354843139",
+    "muebles": "53575716",
+    "camas": "53575716",
+    "combo": "54843139",
+    "comboremesa": "54843139"
+  };
+
+  // buscar número por coincidencia (más tolerante)
+  let numeroWhatsApp = "";
+  for (const key in mapaNumeros) {
+    if (categoria === key || categoria.includes(key) || key.includes(categoria)) {
+      numeroWhatsApp = mapaNumeros[key];
+      break;
+    }
   }
- }
- </script>        
-    
-</body>
+
+  // Si el número no incluye código de país, añadirlo (ejemplo asumiendo Cuba = 53)
+  if (numeroWhatsApp && !/^(\d{10,})$/.test(numeroWhatsApp)) {
+    // si el número tiene 8 dígitos (formato local), asumimos Cuba (53) — cambia según tus países
+    if (/^\d{8}$/.test(numeroWhatsApp)) {
+      numeroWhatsApp = "53" + numeroWhatsApp;
+    }
+    // si no cumple con mínimo esperado, mostrar aviso para que lo revises
+  }
+
+  // si no hay número -> avisar y mostrar qué categoría llegó (debug)
+  if (!numeroWhatsApp) {
+    alert("No se encontró número de WhatsApp para la categoría: " + rawCategoria + ". Revisa el mapeo.");
+    console.warn("No se encontró número para categoría:", rawCategoria, "Mapa actual:", mapaNumeros);
+    return;
+  }
+
+  // crea url y abre WhatsApp
+  const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+  console.log("URL WhatsApp:", url);
+  window.open(url, "_blank"); // o window.location.href = url; para abrir en la misma pestaña
+}
+
 </html>
