@@ -1567,7 +1567,7 @@
      actualizarCarrito();
     }
 
-  function enviarWhatsApp() {
+ function enviarWhatsApp(defaultCountry = "53") {
   // comprueba existencia y formato del carrito
   if (!Array.isArray(carrito) || carrito.length === 0) {
     alert("Tu carrito está vacío.");
@@ -1582,50 +1582,69 @@
   const total = carrito.reduce((acc, item) => acc + (item.precio || 0), 0);
   mensaje += `\n💰 *Total:* $${total.toLocaleString()}\n\n📞 Enviado desde el catálogo web.`;
 
-  // obtiene y normaliza la categoría del primer producto
+  // obtiene y normaliza la categoría del primer producto (sin acentos, en minúsculas)
   const rawCategoria = (carrito[0].categoria || "").toString();
-  const categoria = rawCategoria.trim().toLowerCase();
-  console.log("Categoría detectada:", rawCategoria);
+  const normalizeText = str =>
+    str
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "") // quitar acentos
+      .trim()
+      .toLowerCase();
 
-  // mapa de categorías -> números (usa números completos en formato internacional si los tienes)
+  const categoria = normalizeText(rawCategoria);
+  console.log("Categoría detectada (raw):", rawCategoria, "→ normalizada:", categoria);
+
+  // mapa de categorías -> números (pueden tener '+' o espacios; los normalizamos después)
   const mapaNumeros = {
-    "electrodomésticos": "+5354843139", // ideal: "+53XXXXXXXXX"
     "electrodomesticos": "+5354843139",
+    "electrodomésticos": "+5354843139", // por si usas con acento
     "muebles": "53575716",
     "camas": "53575716",
     "combo": "54843139",
     "comboremesa": "54843139"
   };
 
-  // buscar número por coincidencia (más tolerante)
-  let numeroWhatsApp = "";
+  // buscar número por coincidencia (más tolerante) usando claves normalizadas
+  let numeroWhatsAppRaw = "";
   for (const key in mapaNumeros) {
-    if (categoria === key || categoria.includes(key) || key.includes(categoria)) {
-      numeroWhatsApp = mapaNumeros[key];
+    const keyNorm = normalizeText(key);
+    if (
+      categoria === keyNorm ||
+      categoria.includes(keyNorm) ||
+      keyNorm.includes(categoria)
+    ) {
+      numeroWhatsAppRaw = mapaNumeros[key];
       break;
     }
   }
 
-  // Si el número no incluye código de país, añadirlo (ejemplo asumiendo Cuba = 53)
-  if (numeroWhatsApp && !/^(\d{10,})$/.test(numeroWhatsApp)) {
-    // si el número tiene 8 dígitos (formato local), asumimos Cuba (53) — cambia según tus países
-    if (/^\d{8}$/.test(numeroWhatsApp)) {
-      numeroWhatsApp = "53" + numeroWhatsApp;
-    }
-    // si no cumple con mínimo esperado, mostrar aviso para que lo revises
-  }
-
-  // si no hay número -> avisar y mostrar qué categoría llegó (debug)
-  if (!numeroWhatsApp) {
+  if (!numeroWhatsAppRaw) {
     alert("No se encontró número de WhatsApp para la categoría: " + rawCategoria + ". Revisa el mapeo.");
     console.warn("No se encontró número para categoría:", rawCategoria, "Mapa actual:", mapaNumeros);
     return;
   }
 
+  // normalizar: quedarnos sólo con dígitos
+  let digits = numeroWhatsAppRaw.toString().replace(/\D/g, "");
+  console.log("Número raw:", numeroWhatsAppRaw, "→ digits:", digits);
+
+  // si el número parece local corto (ej. 8 dígitos), añadir código de país por defecto
+  if (digits.length <= 8 && defaultCountry) {
+    digits = defaultCountry + digits;
+    console.log("Añadido código de país por defecto:", defaultCountry, "→", digits);
+  }
+
+  // comprobación mínima de longitud (ajusta si tus números tienen longitud distinta)
+  if (digits.length < 8) {
+    alert("El número de teléfono configurado para esta categoría no es válido: " + numeroWhatsAppRaw);
+    console.warn("Número inválido tras normalizar:", digits);
+    return;
+  }
+
   // crea url y abre WhatsApp
-  const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
-  console.log("URL WhatsApp:", url);
-  window.open(url, "_blank"); // o window.location.href = url; para abrir en la misma pestaña
+  const url = `https://wa.me/${digits}?text=${encodeURIComponent(mensaje)}`;
+  console.log("URL WhatsApp final:", url);
+  window.open(url, "_blank");
 }
 
 </html>
