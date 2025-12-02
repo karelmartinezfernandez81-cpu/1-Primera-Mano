@@ -609,7 +609,7 @@
   <nav>
     <li><a href="#electrodomesticos">⚡ Electrodomésticos</a><li>
     <li><a href="#camas">🛋️ Muebles del hogar</a><li>
-    <li><a href="#Combo">Combos</a><li>  
+    <li><a href="#Combos">Combos</a><li>  
   </nav>
 
   <div class="separator"></div>
@@ -1518,6 +1518,17 @@
     background-color: #d4af37;
     transform: scale(1.05);
   }
+
+  #carrito.cerrado {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out;
+  }
+
+  #carrito.abierto {
+    max-height: 400px;
+    padding: 15px 20px;
+  } 
   </style>
     
  <script>
