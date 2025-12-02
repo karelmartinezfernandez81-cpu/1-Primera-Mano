@@ -1423,253 +1423,134 @@
    </div>
  </section>
 
-  <!-- 🛒 SECCIÓN DEL CARRITO -->
-  <div id="carrito-contenedor">
-  <div id="carrito-header" onclick="toggleCarrito()">
-    <span>🛒 Carrito de Compras</span>
-    <span id="toggle-icon">🔽</span>
-  </div>
-
-  <div id="carrito" class="cerrado">
-    <ul id="lista-carrito"></ul>
-    <p id="total">Total: $0</p>
-    <div class="botones-carrito">
-      <button class="boton-carrito vaciar" onclick="vaciarCarrito()">🗑️ Vaciar</button>
-      <button class="boton-carrito enviar" onclick="enviarWhatsApp()">📲 Enviar por WhatsApp</button>
-   </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="footer">
-    <p>© 2025 Primera Mano | Diseñado por Magdiel</p>
-  </footer>
-  <style>
-    /* 🛒 Estilo general del carrito */
-    #carrito-contenedor {
-     position: fixed;
-     bottom: 0;
-     left: 0;
-     width: 100%;
-     background: rgba(0, 0, 0, 0.95);
-     border-top: 3px solid gold;
-     box-shadow: 0 -4px 20px rgba(255, 215, 0, 0.4);
-     font-family: "Poppins", sans-serif;
-     z-index: 1000;
-     color: gold;
-     max-height: 70px; /* Altura inicial (más baja) */
-     overflow: hidden;
-     transition: max-height 0.5s ease;
-  }
-
-  /* 🧱 Encabezado del carrito */
-  #carrito-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 20px;
-    cursor: pointer;
-    font-weight: bold;
-    background: rgba(0, 0, 0, 0.9);
-    color: gold;
-    font-size: 1.2rem;
-    border-bottom: 1px solid gold;
-  }
-
-  #carrito-header:hover {
-    background-color: gold;
-    color: #000;
-  }
-
-  /* 🔽 Contenido interno del carrito */
-  #carrito {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.4s ease-in-out;
-    padding: 0 20px;
-  }
-
-  #carrito.abierto {
-    max-height: 400px; /* Altura total visible al abrir */
-    padding: 15px 20px;
-  }
-
-  /* 🧾 Lista */
-  #lista-carrito {
-    list-style: none;
-    padding: 0;
-    margin: 10px 0;
-    text-align: left;
-    max-height: 200px;
-    overflow-y: auto;
-  }
-
-  #lista-carrito li {
-    background: rgba(255, 215, 0, 0.1);
-    border: 1px solid gold;
-    border-radius: 8px;
-    padding: 8px;
-    margin-bottom: 6px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: white;
-  }
-
-  #lista-carrito li button {
-    background: none;
-    border: none;
-    color: red;
-    font-size: 1.1rem;
-    cursor: pointer;
-  }
-
-  /* 💰 Total */
-  #total {
-    margin: 10px 0;
-    font-size: 1.1rem;
-    color: gold;
-    font-weight: bold;
-  }
-
-  /* 🟡 Botones */
-  .botones-carrito {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    flex-wrap: wrap;
-  }
-
-  .boton-carrito {
-    padding: 8px 16px;
-    border-radius: 8px;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: 0.3s;
-  }
-
-  .boton-carrito.vaciar {
-    background-color: #222;
-    color: gold;
-    border: 1px solid gold;
-  }
-
-  .boton-carrito.vaciar:hover {
-    background-color: gold;
-    color: #000;
-  }
-
-  .boton-carrito.enviar {
-    background-color: gold;
-    color: #000;
-  }
-
-  .boton-carrito.enviar:hover {
-    background-color: #d4af37;
-    transform: scale(1.05);
-  }
-  </style>
-
  <script>
- let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
-  function guardarCarrito() {
-    localStorage.setItem("carrito", JSON.stringify(carrito));
+function guardarCarrito() {
+  localStorage.setItem("carrito", JSON.stringify(carrito));
+}
+
+function agregarAlCarrito(nombre, idSelect, categoria) {
+  const select = document.getElementById(idSelect);
+  let precio = 0, tamano = "";
+
+  if (select) {
+    precio = parseFloat(select.value);
+    tamano = select.options[select.selectedIndex].text;
+  } else {
+    precio = parseFloat(idSelect);
+    tamano = "Único modelo";
   }
 
-  function agregarAlCarrito(nombre, idSelect) {
-    const select = document.getElementById(idSelect);
-    let precio = 0;
-    let tamano = "";
+  carrito.push({ nombre, tamano, precio, categoria });
+  guardarCarrito();
+  actualizarCarrito();
+}
 
-    if (select) {
-      precio = parseFloat(select.value);
-      tamano = select.options[select.selectedIndex].text;
-    } else {
-      precio = parseFloat(idSelect);
-      tamano = "Único modelo";
-    }
+function actualizarCarrito() {
+  const lista = document.getElementById("lista-carrito");
+  const totalSpan = document.getElementById("total");
+  lista.innerHTML = "";
+  let total = 0;
 
-    carrito.push({ nombre, tamano, precio });
-    guardarCarrito();
-    actualizarCarrito();
-  }
+  carrito.forEach((item, index) => {
+    const li = document.createElement("li");
+    li.textContent = `${item.nombre} - ${item.tamano}`;
+    const precioSpan = document.createElement("span");
+    precioSpan.textContent = ` $${item.precio.toLocaleString()}`;
+    li.appendChild(precioSpan);
 
-  function actualizarCarrito() {
-    const lista = document.getElementById("lista-carrito");
-    const totalSpan = document.getElementById("total");
-    lista.innerHTML = "";
-    let total = 0;
+    const btnEliminar = document.createElement("button");
+    btnEliminar.textContent = "❌";
+    btnEliminar.onclick = () => eliminarDelCarrito(index);
+    li.appendChild(btnEliminar);
 
-    carrito.forEach((item, index) => {
-      const li = document.createElement("li");
-      li.textContent = `${item.nombre} - ${item.tamano}`;
-      const precioSpan = document.createElement("span");
-      precioSpan.textContent = ` $${item.precio.toLocaleString()}`;
-      li.appendChild(precioSpan);
-
-      const btnEliminar = document.createElement("button");
-      btnEliminar.textContent = "❌";
-      btnEliminar.onclick = () => eliminarDelCarrito(index);
-      li.appendChild(btnEliminar);
-
-      lista.appendChild(li);
-      total += item.precio;
+    lista.appendChild(li);
+    total += item.precio;
   });
 
-    totalSpan.textContent = `Total: $${total.toLocaleString()}`;
+  totalSpan.textContent = `Total: $${total.toLocaleString()}`;
+}
+
+function eliminarDelCarrito(index) {
+  carrito.splice(index, 1);
+  guardarCarrito();
+  actualizarCarrito();
+}
+
+function vaciarCarrito() {
+  carrito = [];
+  guardarCarrito();
+  actualizarCarrito();
+}
+
+function toggleCarrito() {
+  const carritoElemento = document.getElementById("carrito");
+  const icon = document.getElementById("toggle-icon");
+
+  carritoElemento.classList.toggle("abierto");
+  icon.textContent = carritoElemento.classList.contains("abierto") ? "🔽" : "🔼";
+}
+
+function normalizeText(str = "") {
+  return str.toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
+}
+function onlyDigits(str = "") {
+  return str.toString().replace(/\D/g, "");
+}
+
+function enviarWhatsApp(defaultCountry = "53") {
+  if (!Array.isArray(carrito) || carrito.length === 0) {
+    alert("Tu carrito está vacío.");
+    return;
   }
 
-  function eliminarDelCarrito(index) {
-    carrito.splice(index, 1);
-    guardarCarrito();
-    actualizarCarrito();
-  }
+  let mensaje = "🛋️ *Pedido desde el Catálogo Primera Mano:*\n\n";
+  carrito.forEach(item => {
+    mensaje += `• ${item.nombre} - ${item.tamano} - $${(Number(item.precio) || 0).toLocaleString()}\n`;
+  });
+  const total = carrito.reduce((acc, item) => acc + (Number(item.precio) || 0), 0);
+  mensaje += `\n💰 *Total:* $${total.toLocaleString()}\n\n📞 Enviado desde el catálogo web.`;
 
-  function vaciarCarrito() {
-    carrito = [];
-    guardarCarrito();
-    actualizarCarrito();
-  }
+  const rawCategoria = carrito[0].categoria || "";
+  const categoria = normalizeText(rawCategoria);
 
-  function enviarWhatsApp() {
-    if (carrito.length === 0) {
-      alert("Tu carrito está vacío.");
-      return;
+  const mapaNumeros = {
+    "electrodomesticos": "5354843139",
+    "muebles": "53575716",
+    "camas": "53575716",
+    "comboremesa": "54843139",
+    "combo": "54843139"
+  };
+
+  let numeroRaw = "";
+  for (const key in mapaNumeros) {
+    const keyNorm = normalizeText(key);
+    if (categoria.includes(keyNorm)) {
+      numeroRaw = mapaNumeros[key];
+      break;
     }
-
-    let mensaje = "🛋️ *Pedido desde el Catálogo Mueble M & M:*\n\n";
-    carrito.forEach(item => {
-      mensaje += `• ${item.nombre} - ${item.tamano} - $${item.precio.toLocaleString()}\n`;
-    });
-    const total = carrito.reduce((acc, item) => acc + item.precio, 0);
-    mensaje += `\n💰 *Total:* $${total.toLocaleString()}\n\n📞 Enviado desde el catálogo web.`;
-
-    const numeroWhatsApp = "53575726";
-    const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
-    window.open(url, "_blank");
   }
 
-  document.addEventListener("DOMContentLoaded", actualizarCarrito);
-   
-  function toggleCarrito() {
-   const carrito = document.getElementById("carrito");
-   const contenedor = document.getElementById("carrito-contenedor");
-   const icon = document.getElementById("toggle-icon");
-
-  carrito.classList.toggle("abierto");
-
-  <script src="script.js"></script>
-  if (carrito.classList.contains("abierto")) {
-    contenedor.style.maxHeight = "500px";
-    icon.textContent = "🔽"; // icono hacia abajo
-  } else {
-    contenedor.style.maxHeight = "70px";
-    icon.textContent = "🔼"; // icono hacia arriba
+  if (!numeroRaw) {
+    alert("No se encontró número de WhatsApp para la categoría: " + rawCategoria);
+    return;
   }
- }
- </script>        
+
+  let digits = onlyDigits(numeroRaw);
+  if (digits.length <= 8 && defaultCountry) digits = defaultCountry + digits;
+  if (digits.length < 8) {
+    alert("Número inválido: " + numeroRaw);
+    return;
+  }
+
+  const url = `https://wa.me/${digits}?text=${encodeURIComponent(mensaje)}`;
+  window.open(url, "_blank");
+}
+
+document.addEventListener("DOMContentLoaded", actualizarCarrito);
+</script>
+
     
 </body>
 </html>
