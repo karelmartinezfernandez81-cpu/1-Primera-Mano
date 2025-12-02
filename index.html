@@ -1486,6 +1486,20 @@ function eliminarDelCarrito(index) {
   guardarCarrito();
   actualizarCarrito();
 }
+function toggleCarrito() {
+  const carritoElemento = document.getElementById("carrito");
+  const icon = document.getElementById("toggle-icon");
+
+  if (carritoElemento.classList.contains("abierto")) {
+    carritoElemento.classList.remove("abierto");
+    carritoElemento.classList.add("cerrado");
+    icon.textContent = "🔼";
+  } else {
+    carritoElemento.classList.remove("cerrado");
+    carritoElemento.classList.add("abierto");
+    icon.textContent = "🔽";
+  }
+}
 
 function vaciarCarrito() {
   carrito = [];
