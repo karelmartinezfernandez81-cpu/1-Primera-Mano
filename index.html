@@ -605,37 +605,10 @@
     <p>Estilo moderno, elegancia y comodidad en cada detalle (personalizable a su gusto)</p>
   </header>
 
-  <!-- MENÚ LATERAL -->
-  <aside class="nav" id="navMenu" aria-hidden="true">
-    <nav class="nav-inner" role="navigation" aria-label="Menú principal">
-      <a href="index.html" class="nav-link">Inicio</a>
-      <a href="catalogo/electrodomesticos.html" class="nav-link">Electrodomésticos</a>
-      <a href="catalogo/muebles.html" class="nav-link">Muebles para el Hogar</a>
-      <a href="catalogo/alimentos.html" class="nav-link">Alimentos / Combos</a>
-      <a href="#ajustes" class="nav-link">Ajustes</a>
-      <a href="#contacto" class="nav-link">Contacto</a>
-    </nav>
-  </aside>
 
-  <!-- Overlay -->
-  <div class="overlay" id="overlay"></div>
-
-  <!-- PORTADA ESTILO REVISTA -->
-  <section id="inicio" class="hero portada-revista elegant-entry">
-    <div class="overlay-portada"></div>
-
-    <div class="portada-contenido">
-      <h1><span>PRIMERA MANO</span></h1>
-      <p>Catálogo Premium — Negro & Dorado</p>
-
-      <div class="portada-grid">
-        <img src="img/portada1.jpg" alt="Portada 1">
-        <img src="img/portada2.jpg" alt="Portada 2">
-        <img src="img/portada3.jpg" alt="Portada 3">
-        <img src="img/portada4.jpg" alt="Portada 4">
   <nav>
-    <li><a href="#camas">⚡ Electrodomésticos</a><li>
-    <li><a href="#muebles-l">🛋️ Muebles del hogar</a><li>
+    <li><a href="#electrodomesticos">⚡ Electrodomésticos</a><li>
+    <li><a href="#muebles">🛋️ Muebles del hogar</a><li>
     <li><a href="#muebles-capitoneados">Combo y Remesa</a><li>  
   </nav>
 
@@ -649,7 +622,7 @@
 
       <!-- AIR FRYER -->
       <div class="producto">
-        <img src="electrodomesticos/electro1.jpg" alt="Air Fryer Royal 4L" loading="lazy">
+        <img src="electrodomestico/electro1.jpg" alt="Air Fryer Royal 4L" loading="lazy">
         <h3>Air Fryer Royal 4L</h3>
         <p class="precio">💵 $55</p>
         <p>USD</p>       
@@ -727,13 +700,9 @@
         <p>USD</p>
         <button class="boton-carrito" onclick="agregarAlCarrito('Air Fryer MILEXUS ML-AF-900', 58 )">Agregar 🛒</button>
        </div>
+   </div>
+ </section>  
 
-        <!-- 🛋️ Muebles en L -->
-  <section id="combo" class="seccion-productos">
-   <h2 class="titulo-oro">
-  Combo y Remesa
-  </h2>
-    <div class="galeria">
        
       <!-- 🛋️ Mueble 1 -->
       <div class="producto">
@@ -743,18 +712,8 @@
         <p class="precio">💰 $195,000</p>
         <button onclick="agregarAlCarrito('Mueble en L de lujo 1', 195000)">Agregar 🛒</button>
       </div>
-    </div>
-  </section>
 
-  <!-- CATEGORÍAS DESTACADAS -->
-  <section id="catalogo" class="catalog elegant-entry">
-    <h2>Categorías</h2>
-    <div class="catalog-grid">
-      <a class="item" href="catalogo/electrodomesticos.html">⚡ Electrodomésticos</a>
-      <a class="item" href="catalogo/muebles.html">🛋 Muebles para el Hogar</a>
-      <a class="item" href="catalogo/alimentos.html">🍱 Alimentos / Combos</a>
-    </div>
-  </section>
+
       <!-- 🛋️ Mueble 2 -->
       <div class="producto">
         <img src="combo/2.jpg" alt="Mueble L2" loading="lazy">
@@ -764,11 +723,7 @@
        <button onclick="agregarAlCarrito('Mueble en L de Lujo capitoneado 2', 210000)">Agregar 🛒</button>
        </div>
 
-  <!-- AJUSTES -->
-  <section id="ajustes" class="ajustes elegant-entry">
-    <h2>Ajustes</h2>
-    <p>Personaliza tu experiencia</p>
-  </section>
+
       <!-- 🛋️ Mueble 3 -->
       <div class="producto">
         <img src="combo/3.jpg" alt="Mueble L3" loading="lazy">
@@ -778,10 +733,6 @@
         <button onclick="agregarAlCarrito('Mueble en L lujo 3', 170000)">Agregar 🛒</button>
        </div>
 
-  <!-- CONTACTO -->
-  <section id="contacto" class="ajustes elegant-entry">
-    <h2>Contacto</h2>
-    <p>Escríbenos para más información</p>
       <!-- 🛋️ Mueble 4 -->
       <div class="producto">
         <img src="combo/4.jpg" alt="Mueble L4" loading="lazy">
@@ -1420,9 +1371,150 @@
    </div>
  </section>
 
+  <!-- 🛒 SECCIÓN DEL CARRITO -->
+  <div id="carrito-contenedor">
+  <div id="carrito-header" onclick="toggleCarrito()">
+    <span>🛒 Carrito de Compras</span>
+    <span id="toggle-icon">🔽</span>
+  </div>
+
+  <div id="carrito" class="cerrado">
+    <ul id="lista-carrito"></ul>
+    <p id="total">Total: $0</p>
+    <div class="botones-carrito">
+      <button class="boton-carrito vaciar" onclick="vaciarCarrito()">🗑️ Vaciar</button>
+      <button class="boton-carrito enviar" onclick="enviarWhatsApp()">📲 Enviar por WhatsApp</button>
    </div>
  </section>
 
+  <style>
+    /* 🛒 Estilo general del carrito */
+    #carrito-contenedor {
+     position: fixed;
+     bottom: 0;
+     left: 0;
+     width: 100%;
+     background: rgba(0, 0, 0, 0.95);
+     border-top: 3px solid gold;
+     box-shadow: 0 -4px 20px rgba(255, 215, 0, 0.4);
+     font-family: "Poppins", sans-serif;
+     z-index: 1000;
+     color: gold;
+     max-height: 70px; /* Altura inicial (más baja) */
+     overflow: hidden;
+     transition: max-height 0.5s ease;
+  }
+
+  /* 🧱 Encabezado del carrito */
+  #carrito-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    cursor: pointer;
+    font-weight: bold;
+    background: rgba(0, 0, 0, 0.9);
+    color: gold;
+    font-size: 1.2rem;
+    border-bottom: 1px solid gold;
+  }
+
+  #carrito-header:hover {
+    background-color: gold;
+    color: #000;
+  }
+
+  /* 🔽 Contenido interno del carrito */
+  #carrito {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out;
+    padding: 0 20px;
+  }
+
+  #carrito.abierto {
+    max-height: 400px; /* Altura total visible al abrir */
+    padding: 15px 20px;
+  }
+
+  /* 🧾 Lista */
+  #lista-carrito {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+    text-align: left;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  #lista-carrito li {
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid gold;
+    border-radius: 8px;
+    padding: 8px;
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+  }
+
+  #lista-carrito li button {
+    background: none;
+    border: none;
+    color: red;
+    font-size: 1.1rem;
+    cursor: pointer;
+  }
+
+  /* 💰 Total */
+  #total {
+    margin: 10px 0;
+    font-size: 1.1rem;
+    color: gold;
+    font-weight: bold;
+  }
+
+  /* 🟡 Botones */
+  .botones-carrito {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+
+  .boton-carrito {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: 0.3s;
+  }
+
+  .boton-carrito.vaciar {
+    background-color: #222;
+    color: gold;
+    border: 1px solid gold;
+  }
+
+  .boton-carrito.vaciar:hover {
+    background-color: gold;
+    color: #000;
+  }
+
+  .boton-carrito.enviar {
+    background-color: gold;
+    color: #000;
+  }
+
+  .boton-carrito.enviar:hover {
+    background-color: #d4af37;
+    transform: scale(1.05);
+  }
+  </style>
+    
  <script>
 let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
