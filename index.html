@@ -1521,154 +1521,136 @@
   </style>
     
  <script>
-let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+  let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
-function guardarCarrito() {
-  localStorage.setItem("carrito", JSON.stringify(carrito));
-}
-
-function agregarAlCarrito(nombre, idSelect, categoria) {
-  const select = document.getElementById(idSelect);
-  let precio = 0, tamano = "";
-
-  if (select) {
-    precio = parseFloat(select.value);
-    tamano = select.options[select.selectedIndex].text;
-  } else {
-    precio = parseFloat(idSelect);
-    tamano = "Único modelo";
-  }
-#carrito.cerrado {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease-in-out;
-}
-#carrito.abierto {
-  max-height: 400px;
-  padding: 15px 20px;
-}
-
-  carrito.push({ nombre, tamano, precio, categoria });
-  guardarCarrito();
-  actualizarCarrito();
-}
-
-function actualizarCarrito() {
-  const lista = document.getElementById("lista-carrito");
-  const totalSpan = document.getElementById("total");
-  lista.innerHTML = "";
-  let total = 0;
-
-  carrito.forEach((item, index) => {
-    const li = document.createElement("li");
-    li.textContent = `${item.nombre} - ${item.tamano}`;
-    const precioSpan = document.createElement("span");
-    precioSpan.textContent = ` $${item.precio.toLocaleString()}`;
-    li.appendChild(precioSpan);
-
-    const btnEliminar = document.createElement("button");
-    btnEliminar.textContent = "❌";
-    btnEliminar.onclick = () => eliminarDelCarrito(index);
-    li.appendChild(btnEliminar);
-
-    lista.appendChild(li);
-    total += item.precio;
-  });
-
-  totalSpan.textContent = `Total: $${total.toLocaleString()}`;
-}
-
-function eliminarDelCarrito(index) {
-  carrito.splice(index, 1);
-  guardarCarrito();
-  actualizarCarrito();
-}
-function toggleCarrito() {
-  const carritoElemento = document.getElementById("carrito");
-  const icon = document.getElementById("toggle-icon");
-
-  if (carritoElemento.classList.contains("abierto")) {
-    carritoElemento.classList.remove("abierto");
-    carritoElemento.classList.add("cerrado");
-    icon.textContent = "🔼";
-  } else {
-    carritoElemento.classList.remove("cerrado");
-    carritoElemento.classList.add("abierto");
-    icon.textContent = "🔽";
-  }
-}
-
-function vaciarCarrito() {
-  carrito = [];
-  guardarCarrito();
-  actualizarCarrito();
-}
-
-function toggleCarrito() {
-  const carritoElemento = document.getElementById("carrito");
-  const icon = document.getElementById("toggle-icon");
-
-  carritoElemento.classList.toggle("abierto");
-  icon.textContent = carritoElemento.classList.contains("abierto") ? "🔽" : "🔼";
-}
-
-function normalizeText(str = "") {
-  return str.toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
-}
-function onlyDigits(str = "") {
-  return str.toString().replace(/\D/g, "");
-}
-
-function enviarWhatsApp(defaultCountry = "53") {
-  if (!Array.isArray(carrito) || carrito.length === 0) {
-    alert("Tu carrito está vacío.");
-    return;
+  function guardarCarrito() {
+    localStorage.setItem("carrito", JSON.stringify(carrito));
   }
 
-  let mensaje = "🛋️ *Pedido desde el Catálogo Primera Mano:*\n\n";
-  carrito.forEach(item => {
-    mensaje += `• ${item.nombre} - ${item.tamano} - $${(Number(item.precio) || 0).toLocaleString()}\n`;
-  });
-  const total = carrito.reduce((acc, item) => acc + (Number(item.precio) || 0), 0);
-  mensaje += `\n💰 *Total:* $${total.toLocaleString()}\n\n📞 Enviado desde el catálogo web.`;
+  function agregarAlCarrito(nombre, idSelect, categoria) {
+    const select = document.getElementById(idSelect);
+    let precio = 0, tamano = "";
 
-  const rawCategoria = carrito[0].categoria || "";
-  const categoria = normalizeText(rawCategoria);
-
-  const mapaNumeros = {
-    "electrodomesticos": "5354843139",
-    "muebles": "53575716",
-    "camas": "53575716",
-    "comboremesa": "54843139",
-    "combo": "54843139"
-  };
-
-  let numeroRaw = "";
-  for (const key in mapaNumeros) {
-    const keyNorm = normalizeText(key);
-    if (categoria.includes(keyNorm)) {
-      numeroRaw = mapaNumeros[key];
-      break;
+    if (select) {
+      precio = parseFloat(select.value);
+      tamano = select.options[select.selectedIndex].text;
+    } else {
+      precio = parseFloat(idSelect);
+      tamano = "Único modelo";
     }
+
+    carrito.push({ nombre, tamano, precio, categoria });
+    guardarCarrito();
+    actualizarCarrito();
   }
 
-  if (!numeroRaw) {
-    alert("No se encontró número de WhatsApp para la categoría: " + rawCategoria);
-    return;
+  function actualizarCarrito() {
+    const lista = document.getElementById("lista-carrito");
+    const totalSpan = document.getElementById("total");
+    lista.innerHTML = "";
+    let total = 0;
+
+    carrito.forEach((item, index) => {
+      const li = document.createElement("li");
+      li.textContent = `${item.nombre} - ${item.tamano}`;
+    
+      const precioSpan = document.createElement("span");
+      precioSpan.textContent = ` $${item.precio.toLocaleString()}`;
+      li.appendChild(precioSpan);
+
+      const btnEliminar = document.createElement("button");
+      btnEliminar.textContent = "❌";
+      btnEliminar.onclick = () => eliminarDelCarrito(index);
+      li.appendChild(btnEliminar);
+
+      lista.appendChild(li);
+      total += item.precio;
+    });
+
+   totalSpan.textContent = `Total: $${total.toLocaleString()}`;
   }
 
-  let digits = onlyDigits(numeroRaw);
-  if (digits.length <= 8 && defaultCountry) digits = defaultCountry + digits;
-  if (digits.length < 8) {
-    alert("Número inválido: " + numeroRaw);
-    return;
+  function eliminarDelCarrito(index) {
+    carrito.splice(index, 1);
+    guardarCarrito();
+    actualizarCarrito();
   }
 
-  const url = `https://wa.me/${digits}?text=${encodeURIComponent(mensaje)}`;
-  window.open(url, "_blank");
-}
+  function vaciarCarrito() {
+    carrito = [];
+    guardarCarrito();
+    actualizarCarrito();
+  }
 
-document.addEventListener("DOMContentLoaded", actualizarCarrito);
+  function toggleCarrito() {
+    const carritoElemento = document.getElementById("carrito");
+    const icon = document.getElementById("toggle-icon");
+
+    carritoElemento.classList.toggle("abierto");
+    icon.textContent = carritoElemento.classList.contains("abierto") ? "🔽" : "🔼";
+  }
+
+  function normalizeText(str = "") {
+    return str.toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
+  }
+
+  function onlyDigits(str = "") {
+    return str.toString().replace(/\D/g, "");
+  }
+
+  function enviarWhatsApp(defaultCountry = "53") {
+    if (!Array.isArray(carrito) || carrito.length === 0) {
+     alert("Tu carrito está vacío.");
+     return;
+    }
+
+   let mensaje = "🛋️ *Pedido desde el Catálogo Primera Mano:*\n\n";
+   carrito.forEach(item => {
+     mensaje += `• ${item.nombre} - ${item.tamano} - $${(Number(item.precio) || 0).toLocaleString()}\n`;
+   });
+
+   const total = carrito.reduce((acc, item) => acc + (Number(item.precio) || 0), 0);
+   mensaje += `\n💰 *Total:* $${total.toLocaleString()}\n\n📞 Enviado desde el catálogo web.`;
+
+   const rawCategoria = carrito[0].categoria || "";
+   const categoria = normalizeText(rawCategoria);
+
+   const mapaNumeros = {
+     "electrodomesticos": "5354843139",
+     "muebles": "53575716",
+     "camas": "53575716",
+     "comboremesa": "54843139",
+     "combo": "54843139"
+   };
+
+   let numeroRaw = "";
+   for (const key in mapaNumeros) {
+     const keyNorm = normalizeText(key);
+     if (categoria.includes(keyNorm)) {
+       numeroRaw = mapaNumeros[key];
+       break;
+     }
+   }
+
+   if (!numeroRaw) {
+     alert("No se encontró número de WhatsApp para la categoría: " + rawCategoria);
+     return;
+    }
+
+   let digits = onlyDigits(numeroRaw);
+   if (digits.length <= 8 && defaultCountry) digits = defaultCountry + digits;
+
+   if (digits.length < 8) {
+     alert("Número inválido: " + numeroRaw);
+     return;
+   }
+
+   const url = `https://wa.me/${digits}?text=${encodeURIComponent(mensaje)}`;
+   window.open(url, "_blank");
+ }
+
+  document.addEventListener("DOMContentLoaded", actualizarCarrito);
+
 </script>
 
     
