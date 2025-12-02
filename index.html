@@ -1374,7 +1374,7 @@
       <button class="boton-carrito vaciar" onclick="vaciarCarrito()">🗑️ Vaciar</button>
       <button class="boton-carrito enviar" onclick="enviarWhatsApp()">📲 Enviar por WhatsApp</button>
    </div>
- </section>
+  </section>
 
   <style>
     /* 🛒 Estilo general del carrito */
@@ -1502,17 +1502,6 @@
     background-color: #d4af37;
     transform: scale(1.05);
   }
-
-  #carrito.cerrado {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.4s ease-in-out;
-  }
-
-  #carrito.abierto {
-    max-height: 400px;
-    padding: 15px 20px;
-  } 
   </style>
     
  <script>
@@ -1578,13 +1567,20 @@
   }
 
   function toggleCarrito() {
-    const carritoElemento = document.getElementById("carrito");
-    const icon = document.getElementById("toggle-icon");
+   const carrito = document.getElementById("carrito");
+   const contenedor = document.getElementById("carrito-contenedor");
+   const icon = document.getElementById("toggle-icon");
 
-    carritoElemento.classList.toggle("abierto");
-    icon.textContent = carritoElemento.classList.contains("abierto") ? "🔽" : "🔼";
+  carrito.classList.toggle("abierto");
+
+  if (carrito.classList.contains("abierto")) {
+    contenedor.style.maxHeight = "500px";
+    icon.textContent = "🔽"; // icono hacia abajo
+  } else {
+    contenedor.style.maxHeight = "70px";
+    icon.textContent = "🔼"; // icono hacia arriba
   }
-
+    
   function normalizeText(str = "") {
     return str.toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
   }
