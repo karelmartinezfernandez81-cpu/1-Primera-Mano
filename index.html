@@ -1208,203 +1208,92 @@
 </style>
 
 <script>
-/* Carrito: almacenamiento local + sincronización entre pestañas */
-let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+/* ---------- FIX toggleCarrito y init (pegar en lugar de las funciones antiguas) ---------- */
 
-/* Guarda carrito en localStorage */
-function guardarCarrito() {
-  localStorage.setItem("carrito", JSON.stringify(carrito));
-  // Disparar evento manual para que otras partes puedan reaccionar (opcional)
-  window.dispatchEvent(new Event('carritoActualizado'));
-}
-
-/**
- * agregarAlCarrito(nombre, idSelectOrPrice, categoria = "")
- * - idSelectOrPrice: puede ser ID de <select> (string) o precio numérico.
- * - categoria: opcional, por ejemplo 'camas' o 'electrodomesticos'
- */
-function agregarAlCarrito(nombre, idSelectOrPrice, categoria = "") {
-  let precio = 0;
-  let tamano = "Único modelo";
-
-  if (typeof idSelectOrPrice === "string" && document.getElementById(idSelectOrPrice)) {
-    const select = document.getElementById(idSelectOrPrice);
-    precio = parseFloat(select.value) || 0;
-    tamano = select.options[select.selectedIndex]?.text || tamano;
-  } else {
-    precio = Number(idSelectOrPrice) || 0;
-  }
-
-  carrito.push({ nombre, tamano, precio, categoria });
-  guardarCarrito();
-  actualizarCarrito();
-  abrirCarritoTemporal();
-}
-
-/* Actualiza DOM del carrito */
-function actualizarCarrito() {
-  const lista = document.getElementById("lista-carrito");
-  const totalSpan = document.getElementById("total");
-  lista.innerHTML = "";
-  let total = 0;
-
-  carrito.forEach((item, index) => {
-    const li = document.createElement("li");
-
-    const info = document.createElement("div");
-    info.style.maxWidth = "70%";
-    info.textContent = `${item.nombre} — ${item.tamano}`;
-
-    const right = document.createElement("div");
-    right.style.display = "flex";
-    right.style.alignItems = "center";
-    right.style.gap = "10px";
-
-    const precioSpan = document.createElement("span");
-    precioSpan.textContent = `$${Number(item.precio).toLocaleString()}`;
-
-    const btnEliminar = document.createElement("button");
-    btnEliminar.setAttribute("aria-label", "Eliminar producto");
-    btnEliminar.textContent = "❌";
-    btnEliminar.onclick = () => eliminarDelCarrito(index);
-
-    right.appendChild(precioSpan);
-    right.appendChild(btnEliminar);
-
-    li.appendChild(info);
-    li.appendChild(right);
-
-    lista.appendChild(li);
-    total += Number(item.precio) || 0;
-  });
-
-  totalSpan.textContent = `Total: $${total.toLocaleString()}`;
-
-  // Actualiza aria-expanded en header
-  document.getElementById("carrito-header").setAttribute("aria-expanded",
-    document.getElementById("carrito").classList.contains("abierto"));
-}
-
-/* Elimina item por índice */
-function eliminarDelCarrito(index) {
-  carrito.splice(index, 1);
-  guardarCarrito();
-  actualizarCarrito();
-}
-
-/* Vaciar carrito con confirmación */
-function vaciarCarrito() {
-  if (!confirm("¿Deseas vaciar el carrito?")) return;
-  carrito = [];
-  guardarCarrito();
-  actualizarCarrito();
-}
-
-/* Toggle (abrir/cerrar) carrito - icono sincronizado */
 function toggleCarrito() {
   const carritoElemento = document.getElementById("carrito");
   const icon = document.getElementById("toggle-icon");
-  carritoElemento.classList.toggle("abierto");
-  const abierto = carritoElemento.classList.contains("abierto");
-  icon.textContent = abierto ? "🔼" : "🔽"; // 🔼 = abierto, 🔽 = cerrado
-  document.getElementById("carrito-header").setAttribute("aria-expanded", abierto);
+  if (!carritoElemento || !icon) {
+    console.error("toggleCarrito: no se encuentra #carrito o #toggle-icon");
+    return;
+  }
+
+  const abierto = carritoElemento.classList.toggle("abierto");
+
+  // Aseguramos que el estilo inline refleje el estado (evita overrides CSS externos)
+  if (abierto) {
+    carritoElemento.style.maxHeight = "420px";
+    carritoElemento.style.padding = "15px 20px";
+    icon.textContent = "🔼"; // abierto
+  } else {
+    carritoElemento.style.maxHeight = "0px";
+    carritoElemento.style.padding = "0 20px";
+    icon.textContent = "🔽"; // cerrado
+  }
+
+  // Accesibilidad
+  const header = document.getElementById("carrito-header");
+  if (header) header.setAttribute("aria-expanded", abierto ? "true" : "false");
+
+  console.log("toggleCarrito -> abierto:", abierto);
 }
 
-/* Abre el carrito momentáneamente al agregar producto */
+/* abre el carrito brevemente (se usa al agregar producto) */
 function abrirCarritoTemporal() {
   const carritoElemento = document.getElementById("carrito");
   const icon = document.getElementById("toggle-icon");
+  if (!carritoElemento || !icon) return;
+
   carritoElemento.classList.add("abierto");
+  carritoElemento.style.maxHeight = "420px";
+  carritoElemento.style.padding = "15px 20px";
   icon.textContent = "🔼";
-  // cierra después si el usuario no lo interactúa y solo si carrito vacio (evitar cierre si hay items)
+  document.getElementById("carrito-header")?.setAttribute("aria-expanded", "true");
+
+  // Cerrar automáticamente solo si el usuario no lo ha abierto manualmente
+  // (No forzamos cierre si el usuario interactúa)
   setTimeout(() => {
-    // no cerramos si el usuario abrió manualmente o si sigue habiendo contenido que justifique mantenerlo
-    if (!document.getElementById("carrito").classList.contains("abierto")) return;
-    // no forzamos cierre; dejamos que el usuario decida
-  }, 1800);
+    // si el usuario abrió/cerró manualmente, no tocamos
+    // dejamos abierto si hay items para que sea cómodo
+    if (!carritoElemento.classList.contains("abierto")) return;
+    // opcional: no cerrar automáticamente
+    // carritoElemento.classList.remove("abierto");
+    // carritoElemento.style.maxHeight = "0px";
+    // icon.textContent = "🔽";
+  }, 2000);
 }
 
-/* Normalización y extracción de dígitos */
-function normalizeText(str = "") {
-  return String(str).normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
-}
-function onlyDigits(str = "") {
-  return String(str).replace(/\D/g, "");
-}
-
-/* Enviar por WhatsApp (ajusta mapaNumeros con números internacionales sin '+') */
-function enviarWhatsApp(defaultCountry = "53") {
-  if (!Array.isArray(carrito) || carrito.length === 0) {
-    alert("Tu carrito está vacío.");
-    return;
-  }
-
-  let mensaje = "🛋️ *Pedido desde el Catálogo Primera Mano:*\n\n";
-  carrito.forEach(item => {
-    mensaje += `• ${item.nombre} - ${item.tamano} - $${(Number(item.precio) || 0).toLocaleString()}\n`;
-  });
-
-  const total = carrito.reduce((acc, item) => acc + (Number(item.precio) || 0), 0);
-  mensaje += `\n💰 *Total:* $${total.toLocaleString()}\n\n📞 Enviado desde el catálogo web.`;
-
-  const rawCategoria = carrito[0]?.categoria || "";
-  const categoria = normalizeText(rawCategoria);
-
-  // Mapa: reemplaza por tus números (formato internacional sin +), ej "573001234567"
-  const mapaNumeros = {
-    "electrodomesticos": "5354843139", // ejemplo
-    "muebles": "53575716",
-    "camas": "53575716",
-    "combos": "54843139",
-    "combo": "54843139"
-  };
-
-  let numeroRaw = "";
-  for (const key in mapaNumeros) {
-    if (categoria.includes(normalizeText(key))) {
-      numeroRaw = mapaNumeros[key];
-      break;
-    }
-  }
-
-  // si no encontró número, usa uno por defecto (ajusta aquí)
-  if (!numeroRaw) {
-    // PON TU NÚMERO POR DEFECTO EN FORMATO INTERNACIONAL SIN EL SIGNO +
-    numeroRaw = "5354843139";
-  }
-
-  let digits = onlyDigits(numeroRaw);
-  if (digits.length <= 8 && defaultCountry) digits = defaultCountry + digits;
-
-  if (digits.length < 8) {
-    alert("Número inválido configurado para WhatsApp: " + numeroRaw);
-    return;
-  }
-
-  const url = `https://wa.me/${digits}?text=${encodeURIComponent(mensaje)}`;
-  window.open(url, "_blank");
-}
-
-/* Sincronización entre pestañas: si localStorage cambia en otra pestaña, actualizar carrito aquí */
-window.addEventListener('storage', (event) => {
-  if (event.key === 'carrito') {
-    carrito = JSON.parse(event.newValue) || [];
-    actualizarCarrito();
-  }
-});
-
-/* evento propio por si otras partes quieren escuchar */
-window.addEventListener('carritoActualizado', () => { /* espacio para hooks si quieres */ });
-
-/* Inicialización al cargar la página */
+/* Aseguramos listener si onclick no está en el HTML */
 document.addEventListener("DOMContentLoaded", () => {
+  // Inicializa estado del carrito desde localStorage (si existe)
   carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-  actualizarCarrito();
-  // icono inicial cerrado
-  document.getElementById("toggle-icon").textContent = "🔽";
-  document.getElementById("carrito-header").setAttribute("aria-expanded", "false");
+  if (typeof actualizarCarrito === "function") actualizarCarrito();
+
+  // Forzamos icono cerrado si no hay abierto
+  const carritoElemento = document.getElementById("carrito");
+  const icon = document.getElementById("toggle-icon");
+  const header = document.getElementById("carrito-header");
+
+  if (carritoElemento && icon) {
+    // Inicial: cerramos
+    carritoElemento.classList.remove("abierto");
+    carritoElemento.style.maxHeight = "0px";
+    carritoElemento.style.padding = "0 20px";
+    icon.textContent = "🔽";
+    if (header) header.setAttribute("aria-expanded", "false");
+  }
+
+  // Si el header no tiene onclick (por edición), le añadimos listener
+  if (header && !header.onclick) {
+    header.addEventListener("click", toggleCarrito);
+  }
+
+  console.log("Carrito inicializado. Items en carrito:", carrito.length);
 });
+
+/* Debug: permite abrir/cerrar desde consola rápidamente */
+window.debugToggleCarrito = toggleCarrito;
 </script>
-<!-- FIN SECCIÓN CARRITO -->
+
 </body> 
 </html>
