@@ -1,31 +1,44 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Primera Mano – Catálogo</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Primera Mano  - Catálogo Premiun</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Primera Mano - Catálogo Premium</title>
+
+  <!-- Font Awesome -->
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="styles.css">
-    <style>
+  <!-- Estilos externos (opcional) -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Estilos internos corregidos y consolidados -->
+  <style>
+    /* --- Reset / Base --- */
+    :root {
+      --oro: #d4af37;
+      --oro-oscuro: #b68a2d;
+      --negro: #000;
+      --fondo-opa: rgba(0,0,0,0.6);
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+
     body {
       margin: 0;
       font-family: "Poppins", sans-serif;
       color: #fff;
-      background: 
-        linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),    
-        url('fondo1.png');
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
+      background:
+        linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
+        url('fondo1.png') center/cover fixed no-repeat;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
-<body>
-      .nombre-producto {
+    /* --- Tipografía y pequeñas utilidades --- */
+    .nombre-producto {
       color: gold;
       font-size: 1.2rem;
       margin: 10px 0;
@@ -50,102 +63,57 @@
       margin-top: 10px;
       border-radius: 8px;
       cursor: pointer;
-      transition: 0.3s;
+      transition: transform 0.2s ease, background-color 0.2s ease;
     }
+    .boton-carrito:hover { background-color: var(--oro); transform: scale(1.02); }
 
-    .boton-carrito:hover {
-      background-color: #d4af37;
-    }
-
-    /* --- Texto elegante negro con borde dorado --- */
-    .producto h3 {
-      color: #000; /* Negro principal */
-      font-weight: bold;
-      font-size: 1.3em;
-      text-align: center;
-      text-shadow:
-        1px 1px 2px #d4af37,
-        -1px -1px 2px #d4af37,
-        1px -1px 2px #d4af37,
-        -1px 1px 2px #d4af37;
-      margin-top: 10px;
-      margin-bottom: 8px;
-      letter-spacing: 1px;
-      transition: transform 0.3s ease, color 0.3s ease;
-    }
-
-    .producto h3:hover {
-      transform: scale(1.05);
-      color: #111;
-    }
-      
+    /* --- Header --- */
     header {
       text-align: center;
       margin-top: 60px;
       padding: 25px 10px;
       background: linear-gradient(to right, #000, #1a0f00, #000);
-      border-bottom: 2px solid gold;
+      border-bottom: 2px solid var(--oro);
       color: white;
-    /* ✨ Sombra elegante */
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
-
-    /* 💛 Efecto de resplandor dorado */
-    animation: glowGold 3s infinite alternate;
+      box-shadow: 0 0 20px rgba(212,175,55,0.3);
+      animation: glowGold 3s infinite alternate;
     }
 
-    /* ✨ Efecto de brillo dorado suave */
     @keyframes glowGold {
       from {
-        box-shadow: 0 0 10px rgba(212, 175, 55, 0.4),
-                    0 0 20px rgba(212, 175, 55, 0.2);
+        box-shadow: 0 0 10px rgba(212,175,55,0.4), 0 0 20px rgba(212,175,55,0.2);
       }
       to {
-        box-shadow: 0 0 25px rgba(212, 175, 55, 0.7),
-                0 0 45px rgba(212, 175, 55, 0.4);
+        box-shadow: 0 0 25px rgba(212,175,55,0.7), 0 0 45px rgba(212,175,55,0.4);
       }
     }
 
-    header svg {
+    header svg { width:100%; max-width:350px; height:auto; margin:0 auto; display:block; }
+    header p {
+      font-size: 1rem;
       width: 100%;
-      max-width: 350px; /* 📱 no se deforma, se ajusta */
-      height: auto;
-      margin: 0 auto;
+      color: var(--oro);
+      text-shadow: 0 0 5px rgba(255,215,0,0.7);
+      margin-top: 8px;
     }
 
-    header p {
-     font-size: 1rem;
-     width: 100%;
-     color: gold;
-     text-shadow: 0 0 5px rgba(255, 215, 0, 0.7);
-     margin-top: 8px;
-   }
-
-    /* 🔁 Adaptación para pantallas pequeñas */
-    @media (max-width: 600px) {
-    header svg text {
-     font-size: 28px; /* más pequeño para celulares */
-      }
-    header p {
-     font-size: 0.9rem; 
-      }
-    }
-    /* 🔥 NAV estilo lujo negro + dorado */
+    /* --- Nav estilo lujo --- */
     nav {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      background: linear-gradient(to right, #000000, #1a1a1a, #000000); /* Degradado suave negro */
+      background: linear-gradient(to right, #000000, #1a1a1a, #000000);
       padding: 6px 0;
       display: flex;
       justify-content: center;
-      gap: 25px;       /* Separación entre botones */
+      gap: 25px;
       z-index: 2000;
-      border-bottom: 2px solid rgba(212, 175, 55, 0.7); /* Línea dorada */
-      backdrop-filter: blur(8px);  /* Efecto vidrio elegante */
-     } 
+      border-bottom: 2px solid rgba(212,175,55,0.7);
+      backdrop-filter: blur(8px);
+    }
 
-    /* ✨ Botones del menú */
+    nav ul { list-style: none; margin: 0; padding: 0; display:flex; gap:20px; align-items:center; }
     nav a {
       color: gold;
       text-decoration: none;
@@ -154,113 +122,129 @@
       padding: 8px 14px;
       border-radius: 6px;
       transition: 0.3s;
-     }
-
-    /* ⭐ Hover dorado */
-    nav a:hover {
-      background: linear-gradient(to right, #d4af37, #b8921b);
-      color: #000;
-      transform: scale(1.08);
-     }   
-    @media (max-width: 480px) {
-      nav {
-        gap: 8px;       /* Menos separación */
-        padding: 4px 0;
-     }
-
-      nav a {
-        font-size: 0.9rem;
-        padding: 6px 10px;
-     }
     }
+    nav a:hover { background: linear-gradient(to right, #d4af37, #b8921b); color:#000; transform: scale(1.08); }
 
+    /* --- Secciones y galería --- */
     .seccion-productos {
       padding: 30px 15px;
       text-align: center;
+      margin-top: 100px; /* espacio por nav fijo */
     }
 
-    .seccion-productos h2 {
-      color: #c49a6c;
-      margin-bottom: 20px;
-    }
+    .seccion-productos h2 { color: #c49a6c; margin-bottom: 20px; }
 
     .galeria {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      justify-content: center;
       gap: 20px;
+      justify-content: center;
+      padding: 10px;
     }
 
+    /* --- Tarjeta de producto --- */
     .producto {
-      background-color: rgba(0, 0, 0, 50); /* fondo blanco con transparencia suave */
-      border: 1px solid gold;
+      background-color: rgba(0,0,0,0.50);
+      border: 1px solid var(--oro);
       border-radius: 20px;
       padding: 20px;
-      box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
-      min-height: 420px; /* asegura que todos los cuadros tengan la misma altura */
-      overflow: hidden; /* evita que algo se salga del cuadro */
-      transition: 0.3s ease
+      box-shadow: 0 0 15px rgba(255,215,0,0.12);
+      min-height: 420px;
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      text-align: center;
+      position: relative;
     }
+    .producto:hover { transform: translateY(-6px); box-shadow: 0 0 25px rgba(255,215,0,0.25); }
 
     .producto img {
       width: 100%;
-      height: 200px; /* iguala el alto de todas las imágenes */
-      object-fit: cover; /* recorta para mantener proporción sin deformar */
-      border-radius: 8px;
+      height: 230px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid var(--oro);
+    }
+
+    .producto h3 {
+      color: gold;
+      font-size: 1.3rem;
+      margin: 10px 0;
+      text-shadow: 0 0 8px rgba(255,215,0,0.45);
     }
 
     .producto p {
-      color: #000;
-      font-size: 0.95em;
-      margin: 8px 0;
-      text-align: center;
+      color: #fff;
+      font-size: 0.95rem;
+      margin-bottom: 12px;
     }
 
-    .producto select, .producto button {
-      margin-top: 8px;
-    }
+    .producto select, .producto button { margin-top: 8px; }
 
-
-    button {
-      background-color: #c49a6c;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-
-    button:hover {
-      background-color: #a87e53;
-    }
-
-    #carrito {
-      background-color: #fff;
-      margin: 30px auto;
-      padding: 20px;
-      max-width: 500px;
+    .selector-precio {
+      width: 100%;
+      padding: 10px;
       border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-    }
-
-    footer {
-      background-color: #000;
-      color: #d4af37;
-      text-align: center;
-      padding: 20px;
-      margin-top: 40px;
-    }
-
-    footer a {
-      color: #d4af37;
-      text-decoration: none;
+      border: 1px solid var(--oro);
+      background: #000;
+      color: gold;
       font-weight: bold;
+      margin-bottom: 10px;
+      cursor: pointer;
     }
 
-    footer a:hover {
-      text-decoration: underline;
+    .producto select { /* estilo específico para selects dentro de .producto */
+      width: 95%;
+      font-size: 0.95em;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 2px solid var(--oro);
+      background-color: #000;
+      color: var(--oro);
+      font-weight: bold;
+      text-align-last: center;
+      min-height: 64px;
+      transition: all 0.2s ease;
     }
+    .producto select:hover { background-color: #111; box-shadow: 0 0 10px var(--oro); }
+    .producto select option { background-color:#000; color:var(--oro); padding:8px; }
+
+    .producto button {
+      width: 95%;
+      font-size: 1.05em;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background-color: var(--oro);
+      color: #000;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.15s ease, background-color 0.15s;
+    }
+    .producto button:hover { background-color: #fff3b0; transform: scale(1.03); }
+
+    /* --- Carrito pequeño (en el tema principal aún se puede sobreescribir) --- */
+    #carrito {
+      background-color: rgba(255,255,255,0.9);
+      color: #000;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      width: 90%;
+      max-width: 600px;
+      margin: 40px auto;
+    }
+
+    #lista-carrito li { list-style:none; padding:8px 0; border-bottom:1px solid #ccc; font-weight:bold; display:flex; justify-content:space-between; align-items:center; }
+
+    #total { text-align:right; font-size:18px; color:#000; font-weight:bold; }
+
+    #carrito button { background-color: var(--oro); color:#000; border:none; padding:12px; border-radius:8px; font-weight:bold; width:100%; cursor:pointer; }
+    #carrito button:hover { background-color: var(--oro-oscuro); }
+
+    /* --- Footer y boton flotante WhatsApp --- */
+    footer { background-color:#000; color:var(--oro); text-align:center; padding:20px; margin-top:40px; }
+    footer a { color:var(--oro); text-decoration:none; font-weight:bold; }
+    footer a:hover { text-decoration:underline; }
 
     .whatsapp-float {
       position: fixed;
@@ -275,310 +259,76 @@
       font-size: 30px;
       box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
       z-index: 1000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-decoration: none;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      text-decoration:none;
     }
+    .whatsapp-float:hover { background-color: #1ebc57; }
 
-    .whatsapp-float:hover {
-      background-color: #1ebc57;
-    }
-    /* --- ESTILO DEL SELECTOR DE PRECIOS --- */
-    .producto select {
-      width: 95%;
-      font-size: 0.9em;
-      padding: 10px 14px;
-      border-radius: 8px;
-      border: 2px solid #d4af37; /* Borde dorado */
-      background-color: #000; /* Fondo negro elegante */
-      color: #d4af37; /* Texto dorado */
-      font-weight: bold;
+    /* --- Título con efecto dorado animado --- */
+    .titulo-oro {
+      grid-column: 1 / -1;
       text-align: center;
-      text-align-last: center;
-      white-space: normal; /* Permite que el texto se divida en varias líneas */
-      word-wrap: break-word; 
-      overflow-wrap: break-word;
-      height: auto;
-      min-height: 70px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .producto select:hover {
-      background-color: #111;
-      box-shadow: 0 0 10px #d4af37;
-    }
-
-    /* --- OPCIONES INTERNAS DEL SELECT --- */
-    .producto select option {
-      background-color: #000;
-      color: #d4af37;
-      padding: 10px;
-      font-size: 1em;
-      border-bottom: 1px solid #d4af37;
-    }
-
-    /* --- BOTÓN DE CARRITO --- */
-    .producto button {
-      width: 95%;
-      font-size: 1.1em;
-      padding: 10px 12px;
-      border-radius: 8px;
-      background-color: #d4af37;
-      color: #000;
+      font-size: 2rem;
+      margin: 40px 0 20px;
       font-weight: bold;
-      border: none;
-      cursor: pointer;
-      margin-top: 10px;
-      transition: all 0.3s ease;
+      background: linear-gradient(90deg, var(--oro), #fff4b8, var(--oro), #b8860b);
+      background-size: 300%;
+      -webkit-background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 15px rgba(255,215,0,0.5);
+      animation: oroBrillando 4s linear infinite;
+    }
+    @keyframes oroBrillando {
+      0%   { background-position: 0% }
+      50%  { background-position: 150% }
+      100% { background-position: 300% }
     }
 
-    .producto button:hover {
-      background-color: #fff3b0;
-      transform: scale(1.05);
-    }
-    /* 💰 Estilos del carrito */
-    #carrito {
-      background-color: rgba(255, 255, 255, 0.70); /* Fondo claro para que se lea bien */
-      color: #000; /* Texto negro */
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-      width: 90%;
-      max-width: 600px;
-      margin: 40px auto;
-    }
-
-    #carrito h2 {
-      color: #d4af37; /* Dorado elegante */
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    #lista-carrito li {
-      list-style: none;
-      padding: 8px 0;
-      border-bottom: 1px solid #ccc;
-      font-weight: bold;
-    }
-
-    #total {
-      text-align: right;
-      font-size: 18px;
-      color: #000;
-      font-weight: bold;
-    }
-
-    #carrito button {
-      background-color: #d4af37;
-      color: #000;
-      border: none;
-      padding: 12px;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
-      width: 100%;
-    }
-
-    #carrito button:hover {
-      background-color: #b68a2d;
-    }
-    /* 🛏️ Estilo general de los productos */
-    .seccion-productos {
-      margin: 50px auto;
-      text-align: center;
-      color: gold;
-      background: rgba(0, 0, 0, 0.6);
-      border-radius: 20px;
-      padding: 30px;
-      box-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
-      width: 95%;
-    }
-
-     /* 📸 Galería de productos */
-      .galeria {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Se adapta automáticamente */
-        gap: 25px;
-        justify-content: center;
-        padding: 20px;
-      }
-
-      /* 🪑 Tarjeta de cada producto */
-      .producto {
-        background: rgba(0, 0, 0, 0.85);
-        border: 1px solid gold;
-        border-radius: 20px;
-        padding: 20px;
-        box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
-        text-align: center;
-        transition: 0.3s;
-      }
-
-      .producto:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
-      }
-
-      /* 📸 Imagen del producto */
-      .producto img {
-        width: 100%;
-        height: 230px;
-        object-fit: cover;
-        border-radius: 15px;
-        border: 1px solid gold;
-      }
-
-      /* 🪄 Nombre del producto */
-      .producto h3 {
-        color: gold;
-        font-size: 1.3rem;
-        margin: 10px 0;
-        text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
-      }
-
-      /* 📜 Descripción */
-      .producto p {
-        color: #fff;
-        font-size: 0.95rem;
-        margin-bottom: 12px;
-      }
-
-      /* 🧾 Selector de tamaño/precio */
-      .selector-precio {
-        width: 100%;
-        padding: 10px;
-        border-radius: 10px;
-        border: 1px solid gold;
-        background: #000;
-        color: gold;
-        font-weight: bold;
-        margin-bottom: 10px;
-        cursor: pointer;
-      }
-
-      /* 🛒 Botón agregar al carrito */
-      .boton-carrito {
-        background-color: gold;
-        color: #000;
-        font-weight: bold;
-        border: none;
-        padding: 10px 16px;
-       border-radius: 8px;
-        cursor: pointer;
-        transition: 0.3s;
-        width: 100%;
-      }
-
-      .boton-carrito:hover {
-        background-color: #d4af37;
-        transform: scale(1.05);
-      }
-
-      /* ✨ Scroll bonito */
-      ::-webkit-scrollbar {
-        width: 8px;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: gold;
-        border-radius: 4px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #000;
-      }
-
-      /* 📱 RESPONSIVE: Ajustes para teléfonos */
-      @media (max-width: 768px) {
-        .galeria {
-          grid-template-columns: repeat(2, 1fr); /* 2 productos por fila en tablets */
-        }
-      }
-
-      @media (max-width: 480px) {
-        .galeria {
-          grid-template-columns: 1fr; /* 1 producto por fila en celulares */
-        }
-
-        .producto img {
-          height: 200px; /* imágenes más pequeñas para móvil */
-        }
-
-        .producto h3 {
-          font-size: 1.1rem;
-        }
-
-        .producto p {
-          font-size: 0.85rem;
-        }
-        
-      .titulo-oro {
-        grid-column: 1 / -1;
-        text-align: center;
-        font-size: 2rem;
-        margin: 40px 0 20px;
-        font-weight: bold;
-
-        /* 🎨 Efecto dorado animado */
-        background: linear-gradient(
-          90deg,
-          #d4af37,
-          #fff4b8,
-          #d4af37,
-          #b8860b
-        );
-        background-size: 300%;
-        -webkit-background-clip: text;
-        color: transparent;
-        text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-        animation: oroBrillando 4s linear infinite;
-      }
-
-      /* ✨ Animación */
-      @keyframes oroBrillando {
-        0%   { background-position: 0% }
-        50%  { background-position: 150% }
-        100% { background-position: 300% }
-      }
-   }
-    /* 🟥 FRANJA AGOTADO EN DIAGONAL OBLICUA */
-    .producto {
-      position: relative;
-    }
-
+    /* --- Indicador AGOTADO --- */
     .producto.agotado::after {
       content: "AGOTADO";
       position: absolute;
-
-      /* Cruza toda la tarjeta en diagonal */
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%) rotate(45deg);
       width: 180%;
       height: 45px;
-
-      background: rgba(255, 0, 0, 0.85);
+      background: rgba(255,0,0,0.85);
       color: white;
       font-size: 1.6rem;
       font-weight: bold;
-      text-align: center;
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      /* Inclinación invertida: sube de izquierda abajo a derecha arriba */
-      transform: translate(-50%, -50%) rotate(45deg);
-
-      letter-spacing: 4px;
-      z-index: 20;
-      pointer-events: none; /* no afecta clics */
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      letter-spacing:4px;
+      z-index:20;
+      pointer-events:none;
     }
 
+    /* --- Scroll personalizado (Webkit) --- */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-thumb { background: var(--oro); border-radius: 4px; }
+    ::-webkit-scrollbar-track { background: #000; }
+
+    /* --- Responsive --- */
+    @media (max-width: 768px) {
+      .galeria { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .galeria { grid-template-columns: 1fr; }
+      .producto img { height: 200px; }
+      .producto h3 { font-size: 1.1rem; }
+      .producto p { font-size: 0.85rem; }
+      nav { gap: 8px; padding: 4px 0; }
+      nav a { font-size: 0.9rem; padding: 6px 10px; }
+    }
   </style>
 </head>
+
 <body>
+
 
   <header>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 100">
@@ -1360,283 +1110,301 @@
    </div> 
  </section>
 
-  <!-- 🛒 SECCIÓN DEL CARRITO -->
-  <div id="carrito-contenedor">
-  <div id="carrito-header" onclick="toggleCarrito()">
+ <!-- 🛒 SECCIÓN DEL CARRITO (REEMPLAZAR BLOQUE COMPLETO) -->
+<div id="carrito-contenedor" aria-live="polite">
+  <div id="carrito-header" role="button" aria-expanded="false" onclick="toggleCarrito()">
     <span>🛒 Carrito de Compras</span>
     <span id="toggle-icon">🔽</span>
   </div>
 
-  <div id="carrito" class="cerrado">
-    <ul id="lista-carrito"></ul>
+  <div id="carrito" class="">
+    <ul id="lista-carrito" aria-label="Lista de productos en el carrito"></ul>
     <p id="total">Total: $0</p>
     <div class="botones-carrito">
       <button class="boton-carrito vaciar" onclick="vaciarCarrito()">🗑️ Vaciar</button>
       <button class="boton-carrito enviar" onclick="enviarWhatsApp()">📲 Enviar por WhatsApp</button>
-   </div>
-  </section>
+    </div>
+  </div>
+</div>
 
-  <style>
-    /* 🛒 Estilo general del carrito */
-    #carrito-contenedor {
-     position: fixed;
-     bottom: 0;
-     left: 0;
-     width: 100%;
-     background: rgba(0, 0, 0, 0.95);
-     border-top: 3px solid gold;
-     box-shadow: 0 -4px 20px rgba(255, 215, 0, 0.4);
-     font-family: "Poppins", sans-serif;
-     z-index: 1000;
-     color: gold;
-     max-height: 70px; /* Altura inicial (más baja) */
-     overflow: hidden;
-     transition: max-height 0.5s ease;
+<style>
+/* Estilos del carrito (sin conflictos con el CSS anterior) */
+#carrito-contenedor {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0,0,0,0.95);
+  border-top: 3px solid var(--oro, #d4af37);
+  box-shadow: 0 -4px 20px rgba(255,215,0,0.4);
+  font-family: "Poppins", sans-serif;
+  z-index: 1000;
+  color: var(--oro, gold);
+  max-height: 70px;
+  overflow: hidden;
+  transition: max-height 0.45s ease;
+}
+
+#carrito-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px 20px;
+  cursor:pointer;
+  font-weight:bold;
+  background: rgba(0,0,0,0.9);
+  color: var(--oro, gold);
+  font-size:1.15rem;
+  border-bottom:1px solid rgba(212,175,55,0.25);
+}
+#carrito-header:hover { background-color: rgba(212,175,55,0.08); }
+
+#carrito {
+  max-height: 0;
+  padding: 0 20px;
+  overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.25s ease;
+}
+#carrito.abierto {
+  max-height: 420px;
+  padding: 15px 20px;
+}
+
+#lista-carrito {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+  text-align: left;
+  max-height: 200px;
+  overflow-y: auto;
+}
+#lista-carrito li {
+  background: rgba(255,215,0,0.06);
+  border: 1px solid rgba(212,175,55,0.25);
+  border-radius: 8px;
+  padding: 8px;
+  margin-bottom: 6px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  color: #fff;
+}
+#lista-carrito li button {
+  background:none;
+  border:none;
+  color:#ff6b6b;
+  font-size:1.1rem;
+  cursor:pointer;
+}
+
+/* total y botones */
+#total { margin:10px 0; font-size:1.05rem; color: var(--oro, gold); font-weight:bold; text-align:right; }
+.botones-carrito { display:flex; justify-content:center; gap:15px; flex-wrap:wrap; }
+.boton-carrito { padding:8px 16px; border-radius:8px; border:none; font-weight:bold; cursor:pointer; font-size:1rem; transition:0.2s; }
+.boton-carrito.vaciar { background:#222; color:var(--oro, gold); border:1px solid rgba(212,175,55,0.25); }
+.boton-carrito.vaciar:hover { background: var(--oro, gold); color:#000; }
+.boton-carrito.enviar { background: var(--oro, gold); color:#000; }
+.boton-carrito.enviar:hover { background: #d4af37; transform:scale(1.03); }
+</style>
+
+<script>
+/* Carrito: almacenamiento local + sincronización entre pestañas */
+let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
+/* Guarda carrito en localStorage */
+function guardarCarrito() {
+  localStorage.setItem("carrito", JSON.stringify(carrito));
+  // Disparar evento manual para que otras partes puedan reaccionar (opcional)
+  window.dispatchEvent(new Event('carritoActualizado'));
+}
+
+/**
+ * agregarAlCarrito(nombre, idSelectOrPrice, categoria = "")
+ * - idSelectOrPrice: puede ser ID de <select> (string) o precio numérico.
+ * - categoria: opcional, por ejemplo 'camas' o 'electrodomesticos'
+ */
+function agregarAlCarrito(nombre, idSelectOrPrice, categoria = "") {
+  let precio = 0;
+  let tamano = "Único modelo";
+
+  if (typeof idSelectOrPrice === "string" && document.getElementById(idSelectOrPrice)) {
+    const select = document.getElementById(idSelectOrPrice);
+    precio = parseFloat(select.value) || 0;
+    tamano = select.options[select.selectedIndex]?.text || tamano;
+  } else {
+    precio = Number(idSelectOrPrice) || 0;
   }
 
-  /* 🧱 Encabezado del carrito */
-  #carrito-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 20px;
-    cursor: pointer;
-    font-weight: bold;
-    background: rgba(0, 0, 0, 0.9);
-    color: gold;
-    font-size: 1.2rem;
-    border-bottom: 1px solid gold;
+  carrito.push({ nombre, tamano, precio, categoria });
+  guardarCarrito();
+  actualizarCarrito();
+  abrirCarritoTemporal();
+}
+
+/* Actualiza DOM del carrito */
+function actualizarCarrito() {
+  const lista = document.getElementById("lista-carrito");
+  const totalSpan = document.getElementById("total");
+  lista.innerHTML = "";
+  let total = 0;
+
+  carrito.forEach((item, index) => {
+    const li = document.createElement("li");
+
+    const info = document.createElement("div");
+    info.style.maxWidth = "70%";
+    info.textContent = `${item.nombre} — ${item.tamano}`;
+
+    const right = document.createElement("div");
+    right.style.display = "flex";
+    right.style.alignItems = "center";
+    right.style.gap = "10px";
+
+    const precioSpan = document.createElement("span");
+    precioSpan.textContent = `$${Number(item.precio).toLocaleString()}`;
+
+    const btnEliminar = document.createElement("button");
+    btnEliminar.setAttribute("aria-label", "Eliminar producto");
+    btnEliminar.textContent = "❌";
+    btnEliminar.onclick = () => eliminarDelCarrito(index);
+
+    right.appendChild(precioSpan);
+    right.appendChild(btnEliminar);
+
+    li.appendChild(info);
+    li.appendChild(right);
+
+    lista.appendChild(li);
+    total += Number(item.precio) || 0;
+  });
+
+  totalSpan.textContent = `Total: $${total.toLocaleString()}`;
+
+  // Actualiza aria-expanded en header
+  document.getElementById("carrito-header").setAttribute("aria-expanded",
+    document.getElementById("carrito").classList.contains("abierto"));
+}
+
+/* Elimina item por índice */
+function eliminarDelCarrito(index) {
+  carrito.splice(index, 1);
+  guardarCarrito();
+  actualizarCarrito();
+}
+
+/* Vaciar carrito con confirmación */
+function vaciarCarrito() {
+  if (!confirm("¿Deseas vaciar el carrito?")) return;
+  carrito = [];
+  guardarCarrito();
+  actualizarCarrito();
+}
+
+/* Toggle (abrir/cerrar) carrito - icono sincronizado */
+function toggleCarrito() {
+  const carritoElemento = document.getElementById("carrito");
+  const icon = document.getElementById("toggle-icon");
+  carritoElemento.classList.toggle("abierto");
+  const abierto = carritoElemento.classList.contains("abierto");
+  icon.textContent = abierto ? "🔼" : "🔽"; // 🔼 = abierto, 🔽 = cerrado
+  document.getElementById("carrito-header").setAttribute("aria-expanded", abierto);
+}
+
+/* Abre el carrito momentáneamente al agregar producto */
+function abrirCarritoTemporal() {
+  const carritoElemento = document.getElementById("carrito");
+  const icon = document.getElementById("toggle-icon");
+  carritoElemento.classList.add("abierto");
+  icon.textContent = "🔼";
+  // cierra después si el usuario no lo interactúa y solo si carrito vacio (evitar cierre si hay items)
+  setTimeout(() => {
+    // no cerramos si el usuario abrió manualmente o si sigue habiendo contenido que justifique mantenerlo
+    if (!document.getElementById("carrito").classList.contains("abierto")) return;
+    // no forzamos cierre; dejamos que el usuario decida
+  }, 1800);
+}
+
+/* Normalización y extracción de dígitos */
+function normalizeText(str = "") {
+  return String(str).normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
+}
+function onlyDigits(str = "") {
+  return String(str).replace(/\D/g, "");
+}
+
+/* Enviar por WhatsApp (ajusta mapaNumeros con números internacionales sin '+') */
+function enviarWhatsApp(defaultCountry = "53") {
+  if (!Array.isArray(carrito) || carrito.length === 0) {
+    alert("Tu carrito está vacío.");
+    return;
   }
 
-  #carrito-header:hover {
-    background-color: gold;
-    color: #000;
+  let mensaje = "🛋️ *Pedido desde el Catálogo Primera Mano:*\n\n";
+  carrito.forEach(item => {
+    mensaje += `• ${item.nombre} - ${item.tamano} - $${(Number(item.precio) || 0).toLocaleString()}\n`;
+  });
+
+  const total = carrito.reduce((acc, item) => acc + (Number(item.precio) || 0), 0);
+  mensaje += `\n💰 *Total:* $${total.toLocaleString()}\n\n📞 Enviado desde el catálogo web.`;
+
+  const rawCategoria = carrito[0]?.categoria || "";
+  const categoria = normalizeText(rawCategoria);
+
+  // Mapa: reemplaza por tus números (formato internacional sin +), ej "573001234567"
+  const mapaNumeros = {
+    "electrodomesticos": "5354843139", // ejemplo
+    "muebles": "53575716",
+    "camas": "53575716",
+    "combos": "54843139",
+    "combo": "54843139"
+  };
+
+  let numeroRaw = "";
+  for (const key in mapaNumeros) {
+    if (categoria.includes(normalizeText(key))) {
+      numeroRaw = mapaNumeros[key];
+      break;
+    }
   }
 
-  /* 🔽 Contenido interno del carrito */
-  #carrito {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.4s ease-in-out;
-    padding: 0 20px;
+  // si no encontró número, usa uno por defecto (ajusta aquí)
+  if (!numeroRaw) {
+    // PON TU NÚMERO POR DEFECTO EN FORMATO INTERNACIONAL SIN EL SIGNO +
+    numeroRaw = "5354843139";
   }
 
-  #carrito.abierto {
-    max-height: 400px; /* Altura total visible al abrir */
-    padding: 15px 20px;
+  let digits = onlyDigits(numeroRaw);
+  if (digits.length <= 8 && defaultCountry) digits = defaultCountry + digits;
+
+  if (digits.length < 8) {
+    alert("Número inválido configurado para WhatsApp: " + numeroRaw);
+    return;
   }
 
-  /* 🧾 Lista */
-  #lista-carrito {
-    list-style: none;
-    padding: 0;
-    margin: 10px 0;
-    text-align: left;
-    max-height: 200px;
-    overflow-y: auto;
-  }
+  const url = `https://wa.me/${digits}?text=${encodeURIComponent(mensaje)}`;
+  window.open(url, "_blank");
+}
 
-  #lista-carrito li {
-    background: rgba(255, 215, 0, 0.1);
-    border: 1px solid gold;
-    border-radius: 8px;
-    padding: 8px;
-    margin-bottom: 6px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: white;
-  }
-
-  #lista-carrito li button {
-    background: none;
-    border: none;
-    color: red;
-    font-size: 1.1rem;
-    cursor: pointer;
-  }
-
-  /* 💰 Total */
-  #total {
-    margin: 10px 0;
-    font-size: 1.1rem;
-    color: gold;
-    font-weight: bold;
-  }
-
-  /* 🟡 Botones */
-  .botones-carrito {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    flex-wrap: wrap;
-  }
-
-  .boton-carrito {
-    padding: 8px 16px;
-    border-radius: 8px;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: 0.3s;
-  }
-
-  .boton-carrito.vaciar {
-    background-color: #222;
-    color: gold;
-    border: 1px solid gold;
-  }
-
-  .boton-carrito.vaciar:hover {
-    background-color: gold;
-    color: #000;
-  }
-
-  .boton-carrito.enviar {
-    background-color: gold;
-    color: #000;
-  }
-
-  .boton-carrito.enviar:hover {
-    background-color: #d4af37;
-    transform: scale(1.05);
-  }
-  </style>
-    
- <script>
- let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-
- function guardarCarrito() {
-   localStorage.setItem("carrito", JSON.stringify(carrito));
- }
-
- function agregarAlCarrito(nombre, idSelect, categoria) {
-   const select = document.getElementById(idSelect);
-   let precio = 0, tamano = "";
-
-   if (select) {
-     precio = parseFloat(select.value);
-     tamano = select.options[select.selectedIndex].text;
-   } else {
-    precio = parseFloat(idSelect);
-    tamano = "Único modelo";
-   }
-
-    carrito.push({ nombre, tamano, precio, categoria });
-    guardarCarrito();
+/* Sincronización entre pestañas: si localStorage cambia en otra pestaña, actualizar carrito aquí */
+window.addEventListener('storage', (event) => {
+  if (event.key === 'carrito') {
+    carrito = JSON.parse(event.newValue) || [];
     actualizarCarrito();
-   }
-
- function actualizarCarrito() {
-   const lista = document.getElementById("lista-carrito");
-   const totalSpan = document.getElementById("total");
-   lista.innerHTML = "";
-   let total = 0;
-
-    carrito.forEach((item, index) => {
-      const li = document.createElement("li");
-      li.textContent = `${item.nombre} - ${item.tamano}`;
-    
-      const precioSpan = document.createElement("span");
-      precioSpan.textContent = ` $${item.precio.toLocaleString()}`;
-      li.appendChild(precioSpan);
-
-      const btnEliminar = document.createElement("button");
-      btnEliminar.textContent = "❌";
-      btnEliminar.onclick = () => eliminarDelCarrito(index);
-      li.appendChild(btnEliminar);
-
-      lista.appendChild(li);
-      total += item.precio;
-    });
-
-    totalSpan.textContent = `Total: $${total.toLocaleString()}`;
-   }
-
- function eliminarDelCarrito(index) {
-   carrito.splice(index, 1);
-   guardarCarrito();
-   actualizarCarrito();
   }
+});
 
- function vaciarCarrito() {
-   carrito = [];
-   guardarCarrito();
-   actualizarCarrito();
- }
+/* evento propio por si otras partes quieren escuchar */
+window.addEventListener('carritoActualizado', () => { /* espacio para hooks si quieres */ });
 
- function toggleCarrito() {
-   const carritoElemento = document.getElementById("carrito");
-   const icon = document.getElementById("toggle-icon");
-
-    carritoElemento.classList.toggle("abierto");
-    icon.textContent = carritoElemento.classList.contains("abierto") ? "🔽" : "🔼";
-  }
-
- function normalizeText(str = "") {
-   return str.toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
-  }
-
- function onlyDigits(str = "") {
-   return str.toString().replace(/\D/g, "");
- }
-
- function enviarWhatsApp(defaultCountry = "53") {
-   if (!Array.isArray(carrito) || carrito.length === 0) {
-     alert("Tu carrito está vacío.");
-     return;
-   }
-
-   let mensaje = "🛋️ *Pedido desde el Catálogo Primera Mano:*\n\n";
-   carrito.forEach(item => {
-     mensaje += `• ${item.nombre} - ${item.tamano} - $${(Number(item.precio) || 0).toLocaleString()}\n`;
-   });
-
-   const total = carrito.reduce((acc, item) => acc + (Number(item.precio) || 0), 0);
-   mensaje += `\n💰 *Total:* $${total.toLocaleString()}\n\n📞 Enviado desde el catálogo web.`;
-
-   const rawCategoria = carrito[0].categoria || "";
-   const categoria = normalizeText(rawCategoria);
-
-   const mapaNumeros = {
-     "electrodomesticos": "5354843139",
-     "muebles": "53575716",
-     "camas": "53575716",
-     "comboremesa": "54843139",
-     "combo": "54843139"
-   };
-
-   let numeroRaw = "";
-   for (const key in mapaNumeros) {
-     const keyNorm = normalizeText(key);
-     if (categoria.includes(keyNorm)) {
-       numeroRaw = mapaNumeros[key];
-       break;
-     }
-   }
-
-   if (!numeroRaw) {
-     alert("No se encontró número de WhatsApp para la categoría: " + rawCategoria);
-     return;
-   }
-
-   let digits = onlyDigits(numeroRaw);
-   if (digits.length <= 8 && defaultCountry) digits = defaultCountry + digits;
-
-   if (digits.length < 8) {
-     alert("Número inválido: " + numeroRaw);
-     return;
-   }
-
-   const url = `https://wa.me/${digits}?text=${encodeURIComponent(mensaje)}`;
-   window.open(url, "_blank");
-  }
-
- document.addEventListener("DOMContentLoaded", actualizarCarrito);
-
+/* Inicialización al cargar la página */
+document.addEventListener("DOMContentLoaded", () => {
+  carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+  actualizarCarrito();
+  // icono inicial cerrado
+  document.getElementById("toggle-icon").textContent = "🔽";
+  document.getElementById("carrito-header").setAttribute("aria-expanded", "false");
+});
 </script>
-
-    
-</body>
+<!-- FIN SECCIÓN CARRITO -->
+</body> 
 </html>
